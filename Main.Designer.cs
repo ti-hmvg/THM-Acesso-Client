@@ -46,6 +46,7 @@
             this.lblNome = new System.Windows.Forms.Label();
             this.TimerVerifyFinger = new System.Windows.Forms.Timer(this.components);
             this.lbl_msg = new System.Windows.Forms.Label();
+            this.btnRegistrar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureFotoPerfil)).BeginInit();
             this.SuspendLayout();
             // 
@@ -89,7 +90,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 340);
+            this.label2.Location = new System.Drawing.Point(12, 353);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 24);
             this.label2.TabIndex = 4;
@@ -99,7 +100,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(12, 364);
+            this.label3.Location = new System.Drawing.Point(12, 377);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(52, 24);
             this.label3.TabIndex = 5;
@@ -109,7 +110,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(12, 388);
+            this.label4.Location = new System.Drawing.Point(12, 401);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(184, 24);
             this.label4.TabIndex = 6;
@@ -119,7 +120,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(12, 412);
+            this.label5.Location = new System.Drawing.Point(12, 425);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(113, 24);
             this.label5.TabIndex = 7;
@@ -128,16 +129,16 @@
             // listHistorico
             // 
             this.listHistorico.FormattingEnabled = true;
-            this.listHistorico.Location = new System.Drawing.Point(12, 463);
+            this.listHistorico.Location = new System.Drawing.Point(12, 476);
             this.listHistorico.Name = "listHistorico";
-            this.listHistorico.Size = new System.Drawing.Size(460, 186);
+            this.listHistorico.Size = new System.Drawing.Size(460, 134);
             this.listHistorico.TabIndex = 9;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(12, 436);
+            this.label6.Location = new System.Drawing.Point(12, 449);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(127, 24);
             this.label6.TabIndex = 10;
@@ -146,7 +147,7 @@
             // lblObservacoes
             // 
             this.lblObservacoes.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblObservacoes.Location = new System.Drawing.Point(145, 436);
+            this.lblObservacoes.Location = new System.Drawing.Point(145, 449);
             this.lblObservacoes.Name = "lblObservacoes";
             this.lblObservacoes.Size = new System.Drawing.Size(327, 24);
             this.lblObservacoes.TabIndex = 16;
@@ -155,7 +156,7 @@
             // lblOcupacoes
             // 
             this.lblOcupacoes.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblOcupacoes.Location = new System.Drawing.Point(131, 412);
+            this.lblOcupacoes.Location = new System.Drawing.Point(131, 425);
             this.lblOcupacoes.Name = "lblOcupacoes";
             this.lblOcupacoes.Size = new System.Drawing.Size(341, 24);
             this.lblOcupacoes.TabIndex = 17;
@@ -164,7 +165,7 @@
             // lblDtNascimento
             // 
             this.lblDtNascimento.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDtNascimento.Location = new System.Drawing.Point(202, 388);
+            this.lblDtNascimento.Location = new System.Drawing.Point(202, 401);
             this.lblDtNascimento.Name = "lblDtNascimento";
             this.lblDtNascimento.Size = new System.Drawing.Size(270, 24);
             this.lblDtNascimento.TabIndex = 18;
@@ -173,7 +174,7 @@
             // lblCPF
             // 
             this.lblCPF.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCPF.Location = new System.Drawing.Point(70, 364);
+            this.lblCPF.Location = new System.Drawing.Point(70, 377);
             this.lblCPF.Name = "lblCPF";
             this.lblCPF.Size = new System.Drawing.Size(402, 24);
             this.lblCPF.TabIndex = 19;
@@ -182,7 +183,7 @@
             // lblNome
             // 
             this.lblNome.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNome.Location = new System.Drawing.Point(85, 343);
+            this.lblNome.Location = new System.Drawing.Point(85, 356);
             this.lblNome.Name = "lblNome";
             this.lblNome.Size = new System.Drawing.Size(387, 24);
             this.lblNome.TabIndex = 20;
@@ -204,11 +205,22 @@
     "aaaaaaaaaaaaaa";
             this.lbl_msg.TextChanged += new System.EventHandler(this.lbl_msg_TextChanged);
             // 
+            // btnRegistrar
+            // 
+            this.btnRegistrar.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRegistrar.Location = new System.Drawing.Point(383, 620);
+            this.btnRegistrar.Name = "btnRegistrar";
+            this.btnRegistrar.Size = new System.Drawing.Size(89, 29);
+            this.btnRegistrar.TabIndex = 22;
+            this.btnRegistrar.Text = "Buscar";
+            this.btnRegistrar.UseVisualStyleBackColor = true;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 661);
+            this.Controls.Add(this.btnRegistrar);
             this.Controls.Add(this.lbl_msg);
             this.Controls.Add(this.lblNome);
             this.Controls.Add(this.lblCPF);
@@ -254,6 +266,7 @@
         private System.Windows.Forms.Label lblNome;
         private System.Windows.Forms.Timer TimerVerifyFinger;
         private System.Windows.Forms.Label lbl_msg;
+        private System.Windows.Forms.Button btnRegistrar;
     }
 }
 

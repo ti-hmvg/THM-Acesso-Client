@@ -27,7 +27,7 @@ namespace THM_Acesso
         private static HttpClient client;
         private void TimerVerifyFinger_Tick(object sender, EventArgs e)
         {
-            try
+            /*try
             {
                 TimerVerifyFinger.Interval = 300;
                 TimerVerifyFinger.Stop();
@@ -92,7 +92,7 @@ namespace THM_Acesso
             {
                 lbl_msg.Text = "Erro no sistema, procure a equipe de TI!";
                 MessageBox.Show(err.ToString());
-            }
+            }*/
         }
 
         private async void lbl_msg_TextChanged(object sender, EventArgs e)
@@ -110,8 +110,9 @@ namespace THM_Acesso
         public Main()
         {
             InitializeComponent();
-
-            urlApi = ConfigurationManager.AppSettings.Get("UrlApi");
+            Cadastro cad = new Cadastro();
+            cad.Show();
+            /*urlApi = ConfigurationManager.AppSettings.Get("UrlApi");
 
             connStr = ConfigurationManager.AppSettings.Get("ConnString") + "user=remoto;database=mestre;port=3306;password=aew!2121";
             connection = new MySqlConnection(connStr);
@@ -148,7 +149,7 @@ namespace THM_Acesso
                 MessageBox.Show(e.Message);
                 connection.Close();
                 throw e;
-            }
+            }*/
 
 
 
