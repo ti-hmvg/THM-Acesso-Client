@@ -48,6 +48,15 @@
             this.label8 = new System.Windows.Forms.Label();
             this.selectMotivo = new System.Windows.Forms.ComboBox();
             this.checkDigital = new System.Windows.Forms.CheckBox();
+            this.btnCadastro = new System.Windows.Forms.Button();
+            this.txbEmail = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txbTelefone = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.fdImagem = new System.Windows.Forms.OpenFileDialog();
+            this.btnSelecionaImagem = new System.Windows.Forms.Button();
+            this.txbSenha = new System.Windows.Forms.TextBox();
+            this.lblSenha = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imgPerfil)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,7 +64,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(17, 86);
+            this.label6.Location = new System.Drawing.Point(17, 138);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(127, 24);
             this.label6.TabIndex = 25;
@@ -65,7 +74,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(17, 112);
+            this.label5.Location = new System.Drawing.Point(17, 164);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(91, 24);
             this.label5.TabIndex = 24;
@@ -162,7 +171,7 @@
             // 
             // txbObs
             // 
-            this.txbObs.Location = new System.Drawing.Point(145, 85);
+            this.txbObs.Location = new System.Drawing.Point(145, 139);
             this.txbObs.Name = "txbObs";
             this.txbObs.Size = new System.Drawing.Size(309, 20);
             this.txbObs.TabIndex = 34;
@@ -174,12 +183,12 @@
             this.lblStatusDigital.Name = "lblStatusDigital";
             this.lblStatusDigital.Size = new System.Drawing.Size(290, 24);
             this.lblStatusDigital.TabIndex = 35;
-            this.lblStatusDigital.Text = "Não Cadastrada";
+            this.lblStatusDigital.Text = "Não Registrada";
             // 
             // selectEmpresa
             // 
             this.selectEmpresa.FormattingEnabled = true;
-            this.selectEmpresa.Location = new System.Drawing.Point(117, 110);
+            this.selectEmpresa.Location = new System.Drawing.Point(117, 168);
             this.selectEmpresa.Name = "selectEmpresa";
             this.selectEmpresa.Size = new System.Drawing.Size(337, 21);
             this.selectEmpresa.TabIndex = 36;
@@ -187,7 +196,7 @@
             // selectOcupacao
             // 
             this.selectOcupacao.FormattingEnabled = true;
-            this.selectOcupacao.Location = new System.Drawing.Point(117, 136);
+            this.selectOcupacao.Location = new System.Drawing.Point(117, 194);
             this.selectOcupacao.Name = "selectOcupacao";
             this.selectOcupacao.Size = new System.Drawing.Size(337, 21);
             this.selectOcupacao.TabIndex = 38;
@@ -196,7 +205,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(17, 136);
+            this.label7.Location = new System.Drawing.Point(17, 190);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(98, 24);
             this.label7.TabIndex = 37;
@@ -206,7 +215,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(17, 163);
+            this.label8.Location = new System.Drawing.Point(17, 216);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(70, 24);
             this.label8.TabIndex = 39;
@@ -215,27 +224,114 @@
             // selectMotivo
             // 
             this.selectMotivo.FormattingEnabled = true;
-            this.selectMotivo.Location = new System.Drawing.Point(117, 162);
+            this.selectMotivo.Location = new System.Drawing.Point(93, 220);
             this.selectMotivo.Name = "selectMotivo";
-            this.selectMotivo.Size = new System.Drawing.Size(337, 21);
+            this.selectMotivo.Size = new System.Drawing.Size(361, 21);
             this.selectMotivo.TabIndex = 40;
             // 
             // checkDigital
             // 
             this.checkDigital.AutoSize = true;
             this.checkDigital.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.checkDigital.Location = new System.Drawing.Point(21, 190);
+            this.checkDigital.Location = new System.Drawing.Point(21, 242);
             this.checkDigital.Name = "checkDigital";
             this.checkDigital.Size = new System.Drawing.Size(180, 28);
             this.checkDigital.TabIndex = 41;
             this.checkDigital.Text = "Não Possui Digital";
             this.checkDigital.UseVisualStyleBackColor = true;
+            this.checkDigital.CheckedChanged += new System.EventHandler(this.checkDigital_CheckedChanged);
+            // 
+            // btnCadastro
+            // 
+            this.btnCadastro.Location = new System.Drawing.Point(522, 420);
+            this.btnCadastro.Name = "btnCadastro";
+            this.btnCadastro.Size = new System.Drawing.Size(149, 28);
+            this.btnCadastro.TabIndex = 42;
+            this.btnCadastro.Text = "Cadastrar";
+            this.btnCadastro.UseVisualStyleBackColor = true;
+            this.btnCadastro.Click += new System.EventHandler(this.btnCadastro_Click);
+            // 
+            // txbEmail
+            // 
+            this.txbEmail.Location = new System.Drawing.Point(85, 113);
+            this.txbEmail.Name = "txbEmail";
+            this.txbEmail.Size = new System.Drawing.Size(369, 20);
+            this.txbEmail.TabIndex = 44;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(17, 112);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(62, 24);
+            this.label9.TabIndex = 43;
+            this.label9.Text = "Email:";
+            // 
+            // txbTelefone
+            // 
+            this.txbTelefone.Location = new System.Drawing.Point(113, 87);
+            this.txbTelefone.Name = "txbTelefone";
+            this.txbTelefone.Size = new System.Drawing.Size(341, 20);
+            this.txbTelefone.TabIndex = 46;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(17, 86);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(90, 24);
+            this.label10.TabIndex = 45;
+            this.label10.Text = "Telefone:";
+            // 
+            // fdImagem
+            // 
+            this.fdImagem.FileName = "fdImagem";
+            // 
+            // btnSelecionaImagem
+            // 
+            this.btnSelecionaImagem.Location = new System.Drawing.Point(522, 254);
+            this.btnSelecionaImagem.Name = "btnSelecionaImagem";
+            this.btnSelecionaImagem.Size = new System.Drawing.Size(150, 29);
+            this.btnSelecionaImagem.TabIndex = 47;
+            this.btnSelecionaImagem.Text = "Selecionar Foto";
+            this.btnSelecionaImagem.UseVisualStyleBackColor = true;
+            this.btnSelecionaImagem.Click += new System.EventHandler(this.btnSelecionaImagem_Click);
+            // 
+            // txbSenha
+            // 
+            this.txbSenha.Location = new System.Drawing.Point(85, 276);
+            this.txbSenha.Name = "txbSenha";
+            this.txbSenha.Size = new System.Drawing.Size(364, 20);
+            this.txbSenha.TabIndex = 49;
+            this.txbSenha.Visible = false;
+            this.txbSenha.TextChanged += new System.EventHandler(this.txbSenha_TextChanged);
+            // 
+            // lblSenha
+            // 
+            this.lblSenha.AutoSize = true;
+            this.lblSenha.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSenha.Location = new System.Drawing.Point(17, 272);
+            this.lblSenha.Name = "lblSenha";
+            this.lblSenha.Size = new System.Drawing.Size(70, 24);
+            this.lblSenha.TabIndex = 48;
+            this.lblSenha.Text = "Senha:";
+            this.lblSenha.Visible = false;
             // 
             // Cadastro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(684, 461);
+            this.Controls.Add(this.txbSenha);
+            this.Controls.Add(this.lblSenha);
+            this.Controls.Add(this.btnSelecionaImagem);
+            this.Controls.Add(this.txbTelefone);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.txbEmail);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.btnCadastro);
             this.Controls.Add(this.checkDigital);
             this.Controls.Add(this.selectMotivo);
             this.Controls.Add(this.label8);
@@ -285,5 +381,14 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox selectMotivo;
         private System.Windows.Forms.CheckBox checkDigital;
+        private System.Windows.Forms.Button btnCadastro;
+        private System.Windows.Forms.TextBox txbEmail;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox txbTelefone;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.OpenFileDialog fdImagem;
+        private System.Windows.Forms.Button btnSelecionaImagem;
+        private System.Windows.Forms.TextBox txbSenha;
+        private System.Windows.Forms.Label lblSenha;
     }
 }
