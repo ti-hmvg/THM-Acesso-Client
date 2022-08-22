@@ -24,6 +24,7 @@ namespace THM_Acesso
         NBioAPI.Type.HFIR HFirCapturado;
         MySqlConnection connection;
         DataTable dt;
+        HttpClient clientHttp;
         private static HttpClient client;
         private void TimerVerifyFinger_Tick(object sender, EventArgs e)
         {
@@ -116,49 +117,61 @@ namespace THM_Acesso
         public Main()
         {
             InitializeComponent();
+
             
-            /*urlApi = ConfigurationManager.AppSettings.Get("UrlApi");
 
-            connStr = ConfigurationManager.AppSettings.Get("ConnString") + "user=remoto;database=mestre;port=3306;password=aew!2121";
-            connection = new MySqlConnection(connStr);
+                /*urlApi = ConfigurationManager.AppSettings.Get("UrlApi");
 
-            m_NBioAPI = new NBioAPI();
-            m_NBioAPI.OpenDevice(NBioAPI.Type.DEVICE_ID.AUTO);
+                connStr = ConfigurationManager.AppSettings.Get("ConnString") + "user=remoto;database=mestre;port=3306;password=aew!2121";
+                connection = new MySqlConnection(connStr);
 
-            m_IndexSearch = new NBioAPI.IndexSearch(m_NBioAPI);
-            m_IndexSearch.InitEngine();
+                m_NBioAPI = new NBioAPI();
+                m_NBioAPI.OpenDevice(NBioAPI.Type.DEVICE_ID.AUTO);
 
-            MySqlDataReader firsDB;
-            DataTable dt;
-            try
-            {
-                connection.Open();
-                var command = new MySqlCommand("SELECT fir_digital,cd_profissional FROM profissional where fir_digital IS NOT NULL", connection);
-                firsDB = command.ExecuteReader();
-                dt = new DataTable();
-                dt.Load(firsDB);
+                m_IndexSearch = new NBioAPI.IndexSearch(m_NBioAPI);
+                m_IndexSearch.InitEngine();
 
-                foreach (DataRow row in dt.Rows)
+                MySqlDataReader firsDB;
+                DataTable dt;
+                try
                 {
-                    m_IndexSearch.AddFIR(new NBioAPI.Type.FIR_TEXTENCODE
-                    {
-                        IsWideChar = true,
-                        TextFIR = row["fir_digital"].ToString()
-                    }, uint.Parse(row["cd_profissional"].ToString()), out fpInfo);
-                }
+                    connection.Open();
+                    var command = new MySqlCommand("SELECT fir_digital,cd_profissional FROM profissional where fir_digital IS NOT NULL", connection);
+                    firsDB = command.ExecuteReader();
+                    dt = new DataTable();
+                    dt.Load(firsDB);
 
-                connection.Close();
-            }
-            catch (MySql.Data.MySqlClient.MySqlException e)
-            {
-                MessageBox.Show(e.Message);
-                connection.Close();
-                throw e;
-            }*/
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        m_IndexSearch.AddFIR(new NBioAPI.Type.FIR_TEXTENCODE
+                        {
+                            IsWideChar = true,
+                            TextFIR = row["fir_digital"].ToString()
+                        }, uint.Parse(row["cd_profissional"].ToString()), out fpInfo);
+                    }
+
+                    connection.Close();
+                }
+                catch (MySql.Data.MySqlClient.MySqlException e)
+                {
+                    MessageBox.Show(e.Message);
+                    connection.Close();
+                    throw e;
+                }*/
 
 
 
         }
+        public async void loadFirs()
+        {
+            var firs = await clientHttp.GetAsync(urlApi + "buscaUsuarioFirs");
+
+            if ((int)firs.StatusCode == 200)
+            {
+
+            }
+        }
 
     }
+
 }
