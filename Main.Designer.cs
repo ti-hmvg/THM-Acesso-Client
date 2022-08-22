@@ -47,6 +47,7 @@
             this.TimerVerifyFinger = new System.Windows.Forms.Timer(this.components);
             this.lbl_msg = new System.Windows.Forms.Label();
             this.btnRegistrar = new System.Windows.Forms.Button();
+            this.btnCadastroUsuario = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureFotoPerfil)).BeginInit();
             this.SuspendLayout();
             // 
@@ -215,11 +216,22 @@
             this.btnRegistrar.Text = "Buscar";
             this.btnRegistrar.UseVisualStyleBackColor = true;
             // 
+            // btnCadastroUsuario
+            // 
+            this.btnCadastroUsuario.Location = new System.Drawing.Point(12, 625);
+            this.btnCadastroUsuario.Name = "btnCadastroUsuario";
+            this.btnCadastroUsuario.Size = new System.Drawing.Size(113, 23);
+            this.btnCadastroUsuario.TabIndex = 23;
+            this.btnCadastroUsuario.Text = "Cadastro Usuario";
+            this.btnCadastroUsuario.UseVisualStyleBackColor = true;
+            this.btnCadastroUsuario.Click += new System.EventHandler(this.btnCadastroUsuario_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 661);
+            this.Controls.Add(this.btnCadastroUsuario);
             this.Controls.Add(this.btnRegistrar);
             this.Controls.Add(this.lbl_msg);
             this.Controls.Add(this.lblNome);
@@ -267,6 +279,7 @@
         private System.Windows.Forms.Timer TimerVerifyFinger;
         private System.Windows.Forms.Label lbl_msg;
         private System.Windows.Forms.Button btnRegistrar;
+        private System.Windows.Forms.Button btnCadastroUsuario;
     }
 }
 

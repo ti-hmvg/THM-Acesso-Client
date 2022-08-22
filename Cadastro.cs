@@ -9,17 +9,16 @@ using AForge.Video.DirectShow;
 using NITGEN.SDK.NBioBSP;
 using Isopoh.Cryptography.Argon2;
 using System.Configuration;
+using Newtonsoft.Json;
 
 namespace THM_Acesso
 {
     public partial class Cadastro : Form
     {
         string urlApi;
-        private static HttpClient client;
-        FilterInfoCollection videoDevices;
         byte[] imgBlob;
         string apiKey;
-        Dictionary<string, string> postContent;
+        Dictionary<string, string> postContent = new Dictionary<string, string>();
         NBioAPI.Type.FIR_TEXTENCODE processedFIR;
         HttpClient clientHttp;
         private byte[] imageToByteArray(Image imageIn)
@@ -36,18 +35,83 @@ namespace THM_Acesso
             return returnImage;
         }
 
-        
+        public class ComboboxItem
+        {
+            public string Text { get; set; }
+            public object Value { get; set; }
+
+            public override string ToString()
+            {
+                return Text;
+            }
+        }
+
         public Cadastro()
         {
             urlApi = ConfigurationManager.AppSettings.Get("UrlApi");
+            clientHttp = new HttpClient();
+            buscaEmpresas();
+
+
             InitializeComponent();
         }
 
-        
+        private async void buscaEmpresas()
+        {
+            var empresas = await clientHttp.GetAsync(urlApi + "cadastraUsuarioDados/empresas");
+
+            if ((int)empresas.StatusCode == 200)
+            {
+                dynamic jsonEmpresas = JsonConvert.DeserializeObject(await empresas.Content.ReadAsStringAsync());
+                foreach (var obj in jsonEmpresas)
+                {
+                    ComboboxItem item = new ComboboxItem();
+                    item.Text = obj["nome"].ToString();
+                    item.Value = (int)obj["cd_empresa"];
+
+                    selectEmpresa.Items.Add(item);
+                }
+            }
+
+        }
+        private async void selectEmpresa_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            selectOcupacao.Items.Clear();
+            selectMotivo.Items.Clear();
+
+            var ocupacoes = await clientHttp.GetAsync(urlApi + "cadastraUsuarioDados/ocupacoes/" + ((ComboboxItem)selectEmpresa.SelectedItem).Value.ToString());
+
+            if ((int)ocupacoes.StatusCode == 200)
+            {
+                dynamic jsonEmpresas = JsonConvert.DeserializeObject(await ocupacoes.Content.ReadAsStringAsync());
+                foreach (var obj in jsonEmpresas)
+                {
+                    ComboboxItem item = new ComboboxItem();
+                    item.Text = obj["nome"].ToString();
+                    item.Value = (int)obj["cd_ocupacao"];
+
+                    selectOcupacao.Items.Add(item);
+                }
+            }
+
+            var motivoVisita = await clientHttp.GetAsync(urlApi + "cadastraUsuarioDados/motivoVisita/" + ((ComboboxItem)selectEmpresa.SelectedItem).Value.ToString());
+
+            if ((int)motivoVisita.StatusCode == 200)
+            {
+                dynamic jsonEmpresas = JsonConvert.DeserializeObject(await motivoVisita.Content.ReadAsStringAsync());
+                foreach (var obj in jsonEmpresas)
+                {
+                    ComboboxItem item = new ComboboxItem();
+                    item.Text = obj["abreviacao_descricao"].ToString();
+                    item.Value = (int)obj["cd_motivo_visita"];
+
+                    selectMotivo.Items.Add(item);
+                }
+            }
+        }
 
         private void btnCadastraImg_Click(object sender, EventArgs e)
         {
-
         }
 
         private void btnCadastraDigital_Click(object sender, EventArgs e)
@@ -110,8 +174,7 @@ namespace THM_Acesso
 
         private async void btnCadastro_Click(object sender, EventArgs e)
         {
-            clientHttp = new HttpClient();
-
+            
             postContent.Add("fir_digital", processedFIR.TextFIR);
             postContent.Add("api_key", Argon2.Hash(apiKey));
             postContent.Add("cpf", txbCPF.Text);
@@ -120,12 +183,19 @@ namespace THM_Acesso
             postContent.Add("telefone", txbTelefone.Text );
             postContent.Add("hash_senha", txbSenha.Visible ? Argon2.Hash(txbSenha.Text):Argon2.Hash("HMVG@123"));
             postContent.Add("dt_nascimento",dtNascimento.Value.Date.ToString("yyyy-MM-dd"));
+            postContent.Add("possui_digital", checkDigital.Checked ? "1":"0");
             postContent.Add("imagem", imgBlob.ToString());
             postContent.Add("permissoes_cd_permissao", "3");
+            postContent.Add("ocupacoes_cd_ocupacao", ((ComboboxItem)selectOcupacao.SelectedItem).Value.ToString());
+            postContent.Add("cd_motivo_servico", ((ComboboxItem)selectMotivo.SelectedItem).Value.ToString());
 
-            var content = new FormUrlEncodedContent(postContent);
+            var cadastro = await clientHttp.PostAsync(urlApi + "cadastraUsuario", new FormUrlEncodedContent(postContent));
 
-            var response = await clientHttp.PostAsync(urlApi + "cadastraUsuario", content);
+            if ((int)cadastro.StatusCode == 200)
+            {
+                MessageBox.Show("Cadastro Realizado com Sucesso!");
+                this.Close();
+            }
         }
 
         private void checkDigital_CheckedChanged(object sender, EventArgs e)
@@ -149,5 +219,7 @@ namespace THM_Acesso
                 btnCadastro.Visible = false;
             }
         }
+
+        
     }
 }

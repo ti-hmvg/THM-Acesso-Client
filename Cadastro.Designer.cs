@@ -123,7 +123,7 @@
             this.btnCadastraImg.Location = new System.Drawing.Point(522, 218);
             this.btnCadastraImg.Name = "btnCadastraImg";
             this.btnCadastraImg.Size = new System.Drawing.Size(150, 29);
-            this.btnCadastraImg.TabIndex = 27;
+            this.btnCadastraImg.TabIndex = 43;
             this.btnCadastraImg.Text = "Cadastrar Foto";
             this.btnCadastraImg.UseVisualStyleBackColor = true;
             this.btnCadastraImg.Click += new System.EventHandler(this.btnCadastraImg_Click);
@@ -133,7 +133,7 @@
             this.btnCadastraDigital.Location = new System.Drawing.Point(12, 420);
             this.btnCadastraDigital.Name = "btnCadastraDigital";
             this.btnCadastraDigital.Size = new System.Drawing.Size(150, 29);
-            this.btnCadastraDigital.TabIndex = 29;
+            this.btnCadastraDigital.TabIndex = 45;
             this.btnCadastraDigital.Text = "Cadastrar Digital";
             this.btnCadastraDigital.UseVisualStyleBackColor = true;
             this.btnCadastraDigital.Click += new System.EventHandler(this.btnCadastraDigital_Click);
@@ -153,7 +153,7 @@
             this.dtNascimento.Location = new System.Drawing.Point(202, 60);
             this.dtNascimento.Name = "dtNascimento";
             this.dtNascimento.Size = new System.Drawing.Size(252, 20);
-            this.dtNascimento.TabIndex = 31;
+            this.dtNascimento.TabIndex = 34;
             // 
             // txbCPF
             // 
@@ -174,7 +174,7 @@
             this.txbObs.Location = new System.Drawing.Point(145, 139);
             this.txbObs.Name = "txbObs";
             this.txbObs.Size = new System.Drawing.Size(309, 20);
-            this.txbObs.TabIndex = 34;
+            this.txbObs.TabIndex = 37;
             // 
             // lblStatusDigital
             // 
@@ -191,7 +191,8 @@
             this.selectEmpresa.Location = new System.Drawing.Point(117, 168);
             this.selectEmpresa.Name = "selectEmpresa";
             this.selectEmpresa.Size = new System.Drawing.Size(337, 21);
-            this.selectEmpresa.TabIndex = 36;
+            this.selectEmpresa.TabIndex = 38;
+            this.selectEmpresa.SelectedIndexChanged += new System.EventHandler(this.selectEmpresa_SelectedIndexChanged);
             // 
             // selectOcupacao
             // 
@@ -199,7 +200,7 @@
             this.selectOcupacao.Location = new System.Drawing.Point(117, 194);
             this.selectOcupacao.Name = "selectOcupacao";
             this.selectOcupacao.Size = new System.Drawing.Size(337, 21);
-            this.selectOcupacao.TabIndex = 38;
+            this.selectOcupacao.TabIndex = 39;
             // 
             // label7
             // 
@@ -246,7 +247,7 @@
             this.btnCadastro.Location = new System.Drawing.Point(522, 420);
             this.btnCadastro.Name = "btnCadastro";
             this.btnCadastro.Size = new System.Drawing.Size(149, 28);
-            this.btnCadastro.TabIndex = 42;
+            this.btnCadastro.TabIndex = 46;
             this.btnCadastro.Text = "Cadastrar";
             this.btnCadastro.UseVisualStyleBackColor = true;
             this.btnCadastro.Click += new System.EventHandler(this.btnCadastro_Click);
@@ -256,7 +257,7 @@
             this.txbEmail.Location = new System.Drawing.Point(85, 113);
             this.txbEmail.Name = "txbEmail";
             this.txbEmail.Size = new System.Drawing.Size(369, 20);
-            this.txbEmail.TabIndex = 44;
+            this.txbEmail.TabIndex = 36;
             // 
             // label9
             // 
@@ -265,7 +266,7 @@
             this.label9.Location = new System.Drawing.Point(17, 112);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(62, 24);
-            this.label9.TabIndex = 43;
+            this.label9.TabIndex = 47;
             this.label9.Text = "Email:";
             // 
             // txbTelefone
@@ -273,7 +274,7 @@
             this.txbTelefone.Location = new System.Drawing.Point(113, 87);
             this.txbTelefone.Name = "txbTelefone";
             this.txbTelefone.Size = new System.Drawing.Size(341, 20);
-            this.txbTelefone.TabIndex = 46;
+            this.txbTelefone.TabIndex = 35;
             // 
             // label10
             // 
@@ -294,7 +295,7 @@
             this.btnSelecionaImagem.Location = new System.Drawing.Point(522, 254);
             this.btnSelecionaImagem.Name = "btnSelecionaImagem";
             this.btnSelecionaImagem.Size = new System.Drawing.Size(150, 29);
-            this.btnSelecionaImagem.TabIndex = 47;
+            this.btnSelecionaImagem.TabIndex = 44;
             this.btnSelecionaImagem.Text = "Selecionar Foto";
             this.btnSelecionaImagem.UseVisualStyleBackColor = true;
             this.btnSelecionaImagem.Click += new System.EventHandler(this.btnSelecionaImagem_Click);
@@ -304,7 +305,7 @@
             this.txbSenha.Location = new System.Drawing.Point(85, 276);
             this.txbSenha.Name = "txbSenha";
             this.txbSenha.Size = new System.Drawing.Size(364, 20);
-            this.txbSenha.TabIndex = 49;
+            this.txbSenha.TabIndex = 42;
             this.txbSenha.Visible = false;
             this.txbSenha.TextChanged += new System.EventHandler(this.txbSenha_TextChanged);
             // 

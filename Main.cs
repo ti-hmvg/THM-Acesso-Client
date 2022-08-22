@@ -107,11 +107,16 @@ namespace THM_Acesso
             pictureFotoPerfil.Image = null;
         }
 
+        private void btnCadastroUsuario_Click(object sender, EventArgs e)
+        {
+            Cadastro cad = new Cadastro();
+            cad.Show();
+        }
+
         public Main()
         {
             InitializeComponent();
-            Cadastro cad = new Cadastro();
-            cad.Show();
+            
             /*urlApi = ConfigurationManager.AppSettings.Get("UrlApi");
 
             connStr = ConfigurationManager.AppSettings.Get("ConnString") + "user=remoto;database=mestre;port=3306;password=aew!2121";
