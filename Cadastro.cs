@@ -21,6 +21,7 @@ namespace THM_Acesso
         Dictionary<string, string> postContent = new Dictionary<string, string>();
         NBioAPI.Type.FIR_TEXTENCODE processedFIR;
         HttpClient clientHttp;
+        Main mainForm;
         private byte[] imageToByteArray(Image imageIn)
         {
             MemoryStream ms = new MemoryStream();
@@ -45,7 +46,6 @@ namespace THM_Acesso
                 return Text;
             }
         }
-
         public Cadastro()
         {
             urlApi = ConfigurationManager.AppSettings.Get("UrlApi");
@@ -54,6 +54,16 @@ namespace THM_Acesso
 
 
             InitializeComponent();
+        }
+        public Cadastro(string cpf)
+        {
+            urlApi = ConfigurationManager.AppSettings.Get("UrlApi");
+            clientHttp = new HttpClient();
+            buscaEmpresas();
+
+
+            InitializeComponent();
+            txbCPF.Text = cpf;  
         }
 
         private async void buscaEmpresas()
@@ -194,6 +204,7 @@ namespace THM_Acesso
             if ((int)cadastro.StatusCode == 200)
             {
                 MessageBox.Show("Cadastro Realizado com Sucesso!");
+                mainForm.loadFirs();
                 this.Close();
             }
         }

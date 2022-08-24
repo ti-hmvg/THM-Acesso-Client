@@ -17,84 +17,13 @@ namespace THM_Acesso
 {
     public partial class Main : Form
     {
-        string urlApi, connStr;
+        string urlApi;
         NBioAPI m_NBioAPI;
         NBioAPI.IndexSearch m_IndexSearch;   
         NBioAPI.IndexSearch.FP_INFO[] fpInfo;
         NBioAPI.Type.HFIR HFirCapturado;
-        MySqlConnection connection;
-        DataTable dt;
         HttpClient clientHttp;
-        private static HttpClient client;
-        private void TimerVerifyFinger_Tick(object sender, EventArgs e)
-        {
-            /*try
-            {
-                TimerVerifyFinger.Interval = 300;
-                TimerVerifyFinger.Stop();
-                bool dedoNoSensor;
-                m_NBioAPI.CheckFinger(out dedoNoSensor);
-
-                if (dedoNoSensor)
-                {
-                    NBioAPI.IndexSearch.FP_INFO fpInfo1;
-                    NBioAPI.IndexSearch.CALLBACK_INFO_0 CallbackInfo = new NBioAPI.IndexSearch.CALLBACK_INFO_0();
-                    bool resultMatch;
-                    NBioAPI.Type.FIR_PAYLOAD payload = new NBioAPI.Type.FIR_PAYLOAD();
-                    client = new HttpClient();
-
-                    m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out HFirCapturado, NBioAPI.Type.TIMEOUT.DEFAULT, null, new NBioAPI.Type.WINDOW_OPTION());
-
-                    m_IndexSearch.IdentifyData(HFirCapturado, 8, out fpInfo1, CallbackInfo);
-                    if (Convert.ToInt32(fpInfo1.ID) == 0)
-                    {
-                        lbl_msg.Text = "Usuario não identificado";
-                        TimerVerifyFinger.Interval = 5000;
-                        TimerVerifyFinger.Start();
-                    }
-                    else
-                    {
-
-                        foreach (DataRow linha in dt.Rows)
-                        {
-                            if (linha["cd_profissional"].ToString() == fpInfo1.ID.ToString())
-                            {
-                                m_NBioAPI.VerifyMatch(HFirCapturado, new NBioAPI.Type.FIR_TEXTENCODE
-                                {
-                                    IsWideChar = true,
-                                    TextFIR = linha["fir_digital"].ToString()
-                                }, out resultMatch, payload);
-
-                                if (resultMatch)
-                                {
-                                    var values = new Dictionary<string, string>
-                                    {
-                                        { "nr_cpf", payload.Data.Split(char.Parse(" "))[1] },
-                                        { "nr_senha", payload.Data.Split(char.Parse(" "))[0] }
-                                    };
-
-                                    var content = new FormUrlEncodedContent(values);
-
-                                    var response = client.PostAsync(urlApi + "biometria/frequencia", content).Result;
-
-                                    var contentResponse = response.Content.ReadAsStringAsync().Result;
-                                    
-                                }
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    TimerVerifyFinger.Start();
-                }
-            }
-            catch (Exception err)
-            {
-                lbl_msg.Text = "Erro no sistema, procure a equipe de TI!";
-                MessageBox.Show(err.ToString());
-            }*/
-        }
+        dynamic jsonFirs;        
 
         private async void lbl_msg_TextChanged(object sender, EventArgs e)
         {
@@ -116,62 +45,161 @@ namespace THM_Acesso
 
         public Main()
         {
-            InitializeComponent();
+            urlApi = ConfigurationManager.AppSettings.Get("UrlApi");
+            clientHttp = new HttpClient();
 
             
+            InitializeComponent();
+            loadFirs();
 
-                /*urlApi = ConfigurationManager.AppSettings.Get("UrlApi");
 
-                connStr = ConfigurationManager.AppSettings.Get("ConnString") + "user=remoto;database=mestre;port=3306;password=aew!2121";
-                connection = new MySqlConnection(connStr);
+        }
 
-                m_NBioAPI = new NBioAPI();
-                m_NBioAPI.OpenDevice(NBioAPI.Type.DEVICE_ID.AUTO);
+        public void loadFirs()
+        {
+            try
+            {
+                var firs = clientHttp.GetAsync(urlApi + "buscaUsuarioFirs").Result;
 
-                m_IndexSearch = new NBioAPI.IndexSearch(m_NBioAPI);
-                m_IndexSearch.InitEngine();
-
-                MySqlDataReader firsDB;
-                DataTable dt;
-                try
+                if ((int)firs.StatusCode == 200)
                 {
-                    connection.Open();
-                    var command = new MySqlCommand("SELECT fir_digital,cd_profissional FROM profissional where fir_digital IS NOT NULL", connection);
-                    firsDB = command.ExecuteReader();
-                    dt = new DataTable();
-                    dt.Load(firsDB);
+                    m_NBioAPI = new NBioAPI();
+                    m_NBioAPI.OpenDevice(NBioAPI.Type.DEVICE_ID.AUTO);
 
-                    foreach (DataRow row in dt.Rows)
+                    m_IndexSearch = new NBioAPI.IndexSearch(m_NBioAPI);
+                    m_IndexSearch.InitEngine();
+
+                    jsonFirs = JsonConvert.DeserializeObject(firs.Content.ReadAsStringAsync().Result);
+
+                    foreach (var usuario in jsonFirs)
                     {
                         m_IndexSearch.AddFIR(new NBioAPI.Type.FIR_TEXTENCODE
                         {
                             IsWideChar = true,
-                            TextFIR = row["fir_digital"].ToString()
-                        }, uint.Parse(row["cd_profissional"].ToString()), out fpInfo);
+                            TextFIR = usuario["fir_digital"].ToString()
+                        }, uint.Parse(usuario["cd_usuario"].ToString()), out fpInfo);
+
                     }
-
-                    connection.Close();
                 }
-                catch (MySql.Data.MySqlClient.MySqlException e)
-                {
-                    MessageBox.Show(e.Message);
-                    connection.Close();
-                    throw e;
-                }*/
-
-
-
-        }
-        public async void loadFirs()
-        {
-            var firs = await clientHttp.GetAsync(urlApi + "buscaUsuarioFirs");
-
-            if ((int)firs.StatusCode == 200)
+                lbl_msg.Text = "Registre a entrada ou pesquise por CPF";
+                lblNome.Text = "";
+                lblCPF.Text = "";
+                lblDtNascimento.Text = "";
+                lblOcupacoes.Text = "";
+                lblObservacoes.Text = "";
+                pictureFotoPerfil.Image = null;
+            }
+            catch (Exception e)
             {
+                MessageBox.Show("Ocorreu algum erro ao carregar os dados. Procure a TI");
+                MessageBox.Show(e.Message);
+                throw;
+            }
+        }
+        private void Main_Activated(object sender, EventArgs e)
+        {
+            TimerVerifyFinger.Start();
+        }
 
+        private void Main_Deactivate(object sender, EventArgs e)
+        {
+            TimerVerifyFinger.Stop();
+        }
+        private void TimerVerifyFinger_Tick(object sender, EventArgs e)
+        {
+           try
+            {
+                TimerVerifyFinger.Stop();
+                TimerVerifyFinger.Interval = 300;
+                bool dedoNoSensor;
+                m_NBioAPI.CheckFinger(out dedoNoSensor);
+
+                if (dedoNoSensor)
+                {
+                    NBioAPI.IndexSearch.FP_INFO fpInfo1;
+                    NBioAPI.IndexSearch.CALLBACK_INFO_0 CallbackInfo = new NBioAPI.IndexSearch.CALLBACK_INFO_0();
+                    bool resultMatch;
+                    NBioAPI.Type.FIR_PAYLOAD payload = new NBioAPI.Type.FIR_PAYLOAD();
+
+                    m_NBioAPI.Capture(NBioAPI.Type.FIR_PURPOSE.VERIFY, out HFirCapturado, NBioAPI.Type.TIMEOUT.DEFAULT, null, new NBioAPI.Type.WINDOW_OPTION());
+
+                    m_IndexSearch.IdentifyData(HFirCapturado, 8, out fpInfo1, CallbackInfo);
+
+                    if (Convert.ToInt32(fpInfo1.ID) == 0)
+                    {
+                        lbl_msg.Text = "Usuario não identificado";
+                        TimerVerifyFinger.Interval = 5000;
+                        TimerVerifyFinger.Start();
+                    }
+                    else
+                    {
+                        foreach (var linha in jsonFirs)
+                        {
+                            if (linha["cd_usuario"].ToString() == fpInfo1.ID.ToString())
+                            {
+                                m_NBioAPI.VerifyMatch(HFirCapturado, new NBioAPI.Type.FIR_TEXTENCODE
+                                {
+                                    IsWideChar = true,
+                                    TextFIR = linha["fir_digital"].ToString()
+                                }, out resultMatch, payload);
+
+                                if (resultMatch)
+                                {
+                                    var values = new Dictionary<string, string>
+                                    {
+                                        { "api_key", payload.Data.Split(char.Parse(" "))[0] },
+                                        { "cpf", payload.Data.Split(char.Parse(" "))[1] }
+                                    };
+
+                                    var response = clientHttp.PostAsync(urlApi + "registro", new FormUrlEncodedContent(values)).Result;
+
+                                    var contentResponse = response.Content.ReadAsStringAsync().Result;
+
+                                    if ((int)response.StatusCode == 200)
+                                    {
+                                        TimerVerifyFinger.Interval = 3000;
+                                        TimerVerifyFinger.Start();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    TimerVerifyFinger.Start();
+                }
+            }
+            catch (Exception err)
+            {
+                lbl_msg.Text = "Erro no sistema, procure a equipe de TI!";
+                MessageBox.Show(err.ToString());
             }
         }
 
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            //verificar digital
+            var firs = clientHttp.GetAsync(urlApi + "buscaUsuario/"+ txbCpf.Text).Result;
+            var contentResponse = firs.Content.ReadAsStringAsync().Result;
+
+            if ((int)firs.StatusCode == 302)
+            {
+                if (MessageBox.Show("CPF cadastrado, Deseja Fazer o Registro Manual?", "CPF Cadastrado", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    
+                }
+            }
+            else if ((int)firs.StatusCode == 404)
+            {
+                if (MessageBox.Show("CPF não Cadastrado, Deseja Abrir a Janela de Cadastro ?", "CPF Não Cadastrado", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+
+                    Cadastro cad = new Cadastro(txbCpf.Text);
+                    cad.Show();
+                }
+            }
+        }
     }
 
 }

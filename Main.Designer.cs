@@ -68,6 +68,7 @@
             this.btnBuscar.TabIndex = 1;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // pictureFotoPerfil
             // 
@@ -192,6 +193,7 @@
             // 
             // TimerVerifyFinger
             // 
+            this.TimerVerifyFinger.Enabled = true;
             this.TimerVerifyFinger.Interval = 300;
             this.TimerVerifyFinger.Tick += new System.EventHandler(this.TimerVerifyFinger_Tick);
             // 
@@ -251,8 +253,8 @@
             this.Controls.Add(this.txbCpf);
             this.Name = "Main";
             this.Text = "THM-Acesso";
-            this.Activated += new System.EventHandler(this.TimerVerifyFinger_Tick);
-            this.Deactivate += new System.EventHandler(this.TimerVerifyFinger_Tick);
+            this.Activated += new System.EventHandler(this.Main_Activated);
+            this.Deactivate += new System.EventHandler(this.Main_Deactivate);
             ((System.ComponentModel.ISupportInitialize)(this.pictureFotoPerfil)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -276,10 +278,10 @@
         private System.Windows.Forms.Label lblDtNascimento;
         private System.Windows.Forms.Label lblCPF;
         private System.Windows.Forms.Label lblNome;
-        private System.Windows.Forms.Timer TimerVerifyFinger;
         private System.Windows.Forms.Label lbl_msg;
         private System.Windows.Forms.Button btnRegistrar;
         private System.Windows.Forms.Button btnCadastroUsuario;
+        public System.Windows.Forms.Timer TimerVerifyFinger;
     }
 }
 
