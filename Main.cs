@@ -59,7 +59,7 @@ namespace THM_Acesso
         {
             try
             {
-                var firs = clientHttp.GetAsync(urlApi + "buscaUsuarioFirs").Result;
+                var firs = clientHttp.GetAsync(urlApi + "biometria/dados").Result;
 
                 if ((int)firs.StatusCode == 200)
                 {
@@ -77,7 +77,7 @@ namespace THM_Acesso
                         {
                             IsWideChar = true,
                             TextFIR = usuario["fir_digital"].ToString()
-                        }, uint.Parse(usuario["cd_usuario"].ToString()), out fpInfo);
+                        }, uint.Parse(usuario["cd_profissional"].ToString()), out fpInfo);
 
                     }
                 }
@@ -93,7 +93,6 @@ namespace THM_Acesso
             {
                 MessageBox.Show("Ocorreu algum erro ao carregar os dados. Procure a TI");
                 MessageBox.Show(e.Message);
-                throw;
             }
         }
         private void Main_Activated(object sender, EventArgs e)
@@ -107,7 +106,7 @@ namespace THM_Acesso
         }
         private void TimerVerifyFinger_Tick(object sender, EventArgs e)
         {
-           try
+            try
             {
                 TimerVerifyFinger.Stop();
                 TimerVerifyFinger.Interval = 300;
@@ -135,7 +134,7 @@ namespace THM_Acesso
                     {
                         foreach (var linha in jsonFirs)
                         {
-                            if (linha["cd_usuario"].ToString() == fpInfo1.ID.ToString())
+                            if (linha["cd_profissional"].ToString() == fpInfo1.ID.ToString())
                             {
                                 m_NBioAPI.VerifyMatch(HFirCapturado, new NBioAPI.Type.FIR_TEXTENCODE
                                 {
@@ -147,11 +146,11 @@ namespace THM_Acesso
                                 {
                                     var values = new Dictionary<string, string>
                                     {
-                                        { "api_key", payload.Data.Split(char.Parse(" "))[0] },
-                                        { "cpf", payload.Data.Split(char.Parse(" "))[1] }
+                                        { "nr_cpf", payload.Data.Split(char.Parse(" "))[1] },
+                                        { "nr_senha", payload.Data.Split(char.Parse(" "))[0] }
                                     };
 
-                                    var response = clientHttp.PostAsync(urlApi + "registro", new FormUrlEncodedContent(values)).Result;
+                                    var response = clientHttp.PostAsync(urlApi + "registraAcesso", new FormUrlEncodedContent(values)).Result;
 
                                     var contentResponse = response.Content.ReadAsStringAsync().Result;
 
