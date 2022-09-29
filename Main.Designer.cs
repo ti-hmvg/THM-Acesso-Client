@@ -206,6 +206,7 @@
             this.lbl_msg.TabIndex = 21;
             this.lbl_msg.Text = "label7aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
     "aaaaaaaaaaaaaa";
+            this.lbl_msg.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbl_msg.TextChanged += new System.EventHandler(this.lbl_msg_TextChanged);
             // 
             // btnRegistrar

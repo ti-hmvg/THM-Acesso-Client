@@ -1,5 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NITGEN.SDK.NBioBSP;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -36,7 +38,16 @@ namespace THM_Acesso
             lblObservacoes.Text = "";
             pictureFotoPerfil.Image = null;
         }
-
+        public static Image LoadBase64(string base64)
+        {
+            byte[] bytes = Convert.FromBase64String(base64);
+            Image image;
+            using (MemoryStream ms = new MemoryStream(bytes))
+            {
+                image = Image.FromStream(ms);
+            }
+            return image;
+        }
         private void btnCadastroUsuario_Click(object sender, EventArgs e)
         {
             Cadastro cad = new Cadastro();
@@ -109,7 +120,7 @@ namespace THM_Acesso
             try
             {
                 TimerVerifyFinger.Stop();
-                TimerVerifyFinger.Interval = 300;
+                
                 bool dedoNoSensor;
                 m_NBioAPI.CheckFinger(out dedoNoSensor);
 
@@ -152,11 +163,20 @@ namespace THM_Acesso
 
                                     var response = clientHttp.PostAsync(urlApi + "registraAcesso", new FormUrlEncodedContent(values)).Result;
 
-                                    var contentResponse = response.Content.ReadAsStringAsync().Result;
+                                    dynamic contentResponse = JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
+                                    
+                                    lbl_msg.Text = contentResponse["mensagem"].ToString();
+
+                                    lblNome.Text = contentResponse["usuario"].nm_profissional.ToString();
+                                    lblCPF.Text = contentResponse["usuario"].nm_profissional.ToString();
+                                    lblDtNascimento.Text = contentResponse["usuario"].dt_nacimento.ToString("dd/MM/yyyy");
+                                    lblObservacoes.Text = contentResponse["usuario"].ds_observacoes.ToString();
+                                    pictureFotoPerfil.Image = LoadBase64(contentResponse["img"].ToString());
+
 
                                     if ((int)response.StatusCode == 200)
                                     {
-                                        TimerVerifyFinger.Interval = 3000;
+                                        TimerVerifyFinger.Interval = 4000;
                                         TimerVerifyFinger.Start();
                                     }
                                 }
@@ -166,6 +186,7 @@ namespace THM_Acesso
                 }
                 else
                 {
+                    TimerVerifyFinger.Interval = 300;
                     TimerVerifyFinger.Start();
                 }
             }

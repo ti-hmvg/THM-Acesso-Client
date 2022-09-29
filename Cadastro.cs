@@ -72,7 +72,7 @@ namespace THM_Acesso
 
             if ((int)empresas.StatusCode == 200)
             {
-                dynamic jsonEmpresas = JsonConvert.DeserializeObject(await empresas.Content.ReadAsStringAsync());
+                /*dynamic jsonEmpresas = JsonConvert.DeserializeObject(await empresas.Content.ReadAsStringAsync());
                 foreach (var obj in jsonEmpresas)
                 {
                     ComboboxItem item = new ComboboxItem();
@@ -80,7 +80,7 @@ namespace THM_Acesso
                     item.Value = (int)obj["cd_empresa"];
 
                     selectEmpresa.Items.Add(item);
-                }
+                }*/
             }
 
         }
@@ -172,6 +172,7 @@ namespace THM_Acesso
                 {
                     var img = new Bitmap(openFileDialog1.FileName);
                     imgBlob = imageToByteArray(img);
+                    
                     imgPerfil.Image = byteArrayToImage(imgBlob);
                 }
             }
