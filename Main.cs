@@ -14,6 +14,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Printing;
 
 namespace THM_Acesso
 {
@@ -48,11 +49,11 @@ namespace THM_Acesso
             }
             return image;
         }
-        private void btnCadastroUsuario_Click(object sender, EventArgs e)
+        /*private void btnCadastroUsuario_Click(object sender, EventArgs e)
         {
             Cadastro cad = new Cadastro();
             cad.Show();
-        }
+        }*/
 
         public Main()
         {
@@ -168,7 +169,7 @@ namespace THM_Acesso
                                     lbl_msg.Text = contentResponse["mensagem"].ToString();
 
                                     lblNome.Text = contentResponse["usuario"].nm_profissional.ToString();
-                                    lblCPF.Text = contentResponse["usuario"].nm_profissional.ToString();
+                                    lblCPF.Text = contentResponse["usuario"].nr_cpf.ToString();
                                     lblDtNascimento.Text = contentResponse["usuario"].dt_nacimento.ToString("dd/MM/yyyy");
                                     lblObservacoes.Text = contentResponse["usuario"].ds_observacoes.ToString();
                                     pictureFotoPerfil.Image = LoadBase64(contentResponse["img"].ToString());
@@ -197,7 +198,23 @@ namespace THM_Acesso
             }
         }
 
-        private void btnBuscar_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
+            PrintDocument printDoc = PrintEtiqueta;
+            printDoc.PrintController = new StandardPrintController();
+            printDoc.Print();
+
+        }
+
+        private void PrintEtiqueta_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            e.Graphics.DrawString("Teste etiqueta", new Font("Arial", 12, FontStyle.Regular), Brushes.Black, new Point(10, 10));
+        }
+
+
+
+        /*private void btnBuscar_Click(object sender, EventArgs e)
         {
             //verificar digital
             var firs = clientHttp.GetAsync(urlApi + "buscaUsuario/"+ txbCpf.Text).Result;
@@ -219,7 +236,7 @@ namespace THM_Acesso
                     cad.Show();
                 }
             }
-        }
+        }*/
     }
 
 }
