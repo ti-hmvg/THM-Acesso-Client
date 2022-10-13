@@ -29,13 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pictureFotoPerfil = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.listHistorico = new System.Windows.Forms.ListBox();
             this.label6 = new System.Windows.Forms.Label();
             this.lblObservacoes = new System.Windows.Forms.Label();
             this.lblOcupacoes = new System.Windows.Forms.Label();
@@ -44,10 +43,15 @@
             this.lblNome = new System.Windows.Forms.Label();
             this.TimerVerifyFinger = new System.Windows.Forms.Timer(this.components);
             this.lbl_msg = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.PrintEtiqueta = new System.Drawing.Printing.PrintDocument();
-            this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
+            this.dataGridHistorico = new System.Windows.Forms.DataGridView();
+            this.ColumnNome = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnCPF = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnAcao = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnImprimir = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.ColumnPrestador = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.pictureFotoPerfil)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridHistorico)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureFotoPerfil
@@ -101,14 +105,6 @@
             this.label5.TabIndex = 7;
             this.label5.Text = "Ocupações:";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // listHistorico
-            // 
-            this.listHistorico.FormattingEnabled = true;
-            this.listHistorico.Location = new System.Drawing.Point(12, 476);
-            this.listHistorico.Name = "listHistorico";
-            this.listHistorico.Size = new System.Drawing.Size(460, 134);
-            this.listHistorico.TabIndex = 9;
             // 
             // label6
             // 
@@ -189,36 +185,70 @@
             this.lbl_msg.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbl_msg.TextChanged += new System.EventHandler(this.lbl_msg_TextChanged);
             // 
-            // button1
+            // dataGridHistorico
             // 
-            this.button1.Location = new System.Drawing.Point(376, 616);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(96, 33);
-            this.button1.TabIndex = 22;
-            this.button1.Text = "Imprimir";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.dataGridHistorico.AllowUserToAddRows = false;
+            this.dataGridHistorico.AllowUserToDeleteRows = false;
+            this.dataGridHistorico.AllowUserToResizeColumns = false;
+            this.dataGridHistorico.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridHistorico.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridHistorico.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ColumnNome,
+            this.ColumnCPF,
+            this.ColumnAcao,
+            this.ColumnImprimir,
+            this.ColumnPrestador});
+            this.dataGridHistorico.Location = new System.Drawing.Point(12, 476);
+            this.dataGridHistorico.MultiSelect = false;
+            this.dataGridHistorico.Name = "dataGridHistorico";
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridHistorico.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridHistorico.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            this.dataGridHistorico.Size = new System.Drawing.Size(460, 134);
+            this.dataGridHistorico.TabIndex = 23;
+            this.dataGridHistorico.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridHistorico_CellClick);
             // 
-            // PrintEtiqueta
+            // ColumnNome
             // 
-            this.PrintEtiqueta.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.PrintEtiqueta_PrintPage);
+            this.ColumnNome.HeaderText = "Nome";
+            this.ColumnNome.Name = "ColumnNome";
             // 
-            // printPreviewDialog1
+            // ColumnCPF
             // 
-            this.printPreviewDialog1.AutoScrollMargin = new System.Drawing.Size(0, 0);
-            this.printPreviewDialog1.AutoScrollMinSize = new System.Drawing.Size(0, 0);
-            this.printPreviewDialog1.ClientSize = new System.Drawing.Size(400, 300);
-            this.printPreviewDialog1.Enabled = true;
-            this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
-            this.printPreviewDialog1.Name = "printPreviewDialog1";
-            this.printPreviewDialog1.Visible = false;
+            this.ColumnCPF.HeaderText = "CPF";
+            this.ColumnCPF.Name = "ColumnCPF";
+            // 
+            // ColumnAcao
+            // 
+            this.ColumnAcao.HeaderText = "Ação";
+            this.ColumnAcao.Name = "ColumnAcao";
+            this.ColumnAcao.ReadOnly = true;
+            // 
+            // ColumnImprimir
+            // 
+            this.ColumnImprimir.HeaderText = "Imprimir";
+            this.ColumnImprimir.Name = "ColumnImprimir";
+            this.ColumnImprimir.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ColumnImprimir.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // ColumnPrestador
+            // 
+            this.ColumnPrestador.HeaderText = "Prestador";
+            this.ColumnPrestador.Name = "ColumnPrestador";
+            this.ColumnPrestador.Visible = false;
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 661);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.dataGridHistorico);
             this.Controls.Add(this.lbl_msg);
             this.Controls.Add(this.lblNome);
             this.Controls.Add(this.lblCPF);
@@ -226,7 +256,6 @@
             this.Controls.Add(this.lblOcupacoes);
             this.Controls.Add(this.lblObservacoes);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.listHistorico);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -237,6 +266,7 @@
             this.Activated += new System.EventHandler(this.Main_Activated);
             this.Deactivate += new System.EventHandler(this.Main_Deactivate);
             ((System.ComponentModel.ISupportInitialize)(this.pictureFotoPerfil)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridHistorico)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -248,7 +278,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ListBox listHistorico;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label lblObservacoes;
         private System.Windows.Forms.Label lblOcupacoes;
@@ -257,9 +286,13 @@
         private System.Windows.Forms.Label lblNome;
         private System.Windows.Forms.Label lbl_msg;
         public System.Windows.Forms.Timer TimerVerifyFinger;
-        private System.Windows.Forms.Button button1;
         private System.Drawing.Printing.PrintDocument PrintEtiqueta;
-        private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
+        private System.Windows.Forms.DataGridView dataGridHistorico;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnNome;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnCPF;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnAcao;
+        private System.Windows.Forms.DataGridViewButtonColumn ColumnImprimir;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnPrestador;
     }
 }
 

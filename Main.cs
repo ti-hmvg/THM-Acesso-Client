@@ -15,7 +15,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Printing;
-
 namespace THM_Acesso
 {
     public partial class Main : Form
@@ -62,6 +61,7 @@ namespace THM_Acesso
 
             
             InitializeComponent();
+
             loadFirs();
 
 
@@ -166,7 +166,7 @@ namespace THM_Acesso
 
                                     dynamic contentResponse = JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
                                     
-                                    lbl_msg.Text = contentResponse["mensagem"].ToString();
+                                    lbl_msg.Text = contentResponse["mensagem"].mensagem.ToString();
 
                                     lblNome.Text = contentResponse["usuario"].nm_profissional.ToString();
                                     lblCPF.Text = contentResponse["usuario"].nr_cpf.ToString();
@@ -174,7 +174,35 @@ namespace THM_Acesso
                                     lblObservacoes.Text = contentResponse["usuario"].ds_observacoes.ToString();
                                     pictureFotoPerfil.Image = LoadBase64(contentResponse["img"].ToString());
 
+                                    var index = dataGridHistorico.Rows.Add();
+                                    dataGridHistorico.Rows[index].Cells[0].Value = lblNome.Text;
+                                    dataGridHistorico.Rows[index].Cells[1].Value = lblCPF.Text;
+                                    dataGridHistorico.Rows[index].Cells[2].Value = contentResponse["mensagem"].acao.ToString();
+                                    //MessageBox.Show(contentResponse["mensagem"].imprime.ToString());
+                                    if (contentResponse["mensagem"].imprime.ToString() == "True")
+                                    {
+                                        dataGridHistorico.Rows[index].Cells[3].ReadOnly = false;
+                                    }
+                                    else
+                                    {
+                                        dataGridHistorico.Rows[index].Cells[3].ReadOnly = true;
+                                    }
 
+                                    if (contentResponse["mensagem"].prestador.ToString() == "True")
+                                    {
+                                        dataGridHistorico.Rows[index].Cells[4].Value = true;
+                                    }
+                                    else
+                                    {
+                                        dataGridHistorico.Rows[index].Cells[4].Value = false;
+                                    }
+                                    
+                                    /*DataGridViewRow row = (DataGridViewRow)dataGridHistorico.Rows[dataGridHistorico.Rows.Add()].Clone();
+                                    row.Cells[0].Value = lblNome.Text;
+                                    row.Cells[1].Value = lblCPF.Text; 
+                                    row.Cells[2].ReadOnly =true;
+                                    dataGridHistorico.Rows.Add(lblNome.Text, lblCPF.Text, "Etiqueta Visitante");
+*/
                                     if ((int)response.StatusCode == 200)
                                     {
                                         TimerVerifyFinger.Interval = 4000;
@@ -198,18 +226,41 @@ namespace THM_Acesso
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        
+
+        
+
+        public void dataGridHistorico_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             
-            PrintDocument printDoc = PrintEtiqueta;
-            printDoc.PrintController = new StandardPrintController();
-            printDoc.Print();
 
-        }
+            if (e.ColumnIndex == dataGridHistorico.Columns["ColumnImprimir"].Index && e.RowIndex >= 0 && dataGridHistorico.Rows[e.RowIndex].Cells[3].ReadOnly == false)
+            {
+                
+                PrintDocument p = new PrintDocument();
+                p.PrintPage += delegate (object senderPrint, PrintPageEventArgs ePrint)
+                {
+                    if (dataGridHistorico.Rows[e.RowIndex].Cells[4].Value.ToString() == "True")
+                    {
+                        ePrint.Graphics.DrawString("Prestador", new Font("Times New Roman", 12), new SolidBrush(Color.Black), new Point(100, 10));
+                    }
+                    else
+                    {
+                        ePrint.Graphics.DrawString("Visitante", new Font("Times New Roman", 12), new SolidBrush(Color.Black), new Point(100, 10));
+                    }
+                    ePrint.Graphics.DrawString("Nome: " + dataGridHistorico.Rows[e.RowIndex].Cells[0].Value.ToString(), new Font("Times New Roman", 12), new SolidBrush(Color.Black), new Point(10, 25));
+                    ePrint.Graphics.DrawString("CPF: " + dataGridHistorico.Rows[e.RowIndex].Cells[1].Value.ToString(), new Font("Times New Roman", 12), new SolidBrush(Color.Black), new Point(10, 40));
 
-        private void PrintEtiqueta_PrintPage(object sender, PrintPageEventArgs e)
-        {
-            e.Graphics.DrawString("Teste etiqueta", new Font("Arial", 12, FontStyle.Regular), Brushes.Black, new Point(10, 10));
+                };
+                try
+                {
+                    p.Print();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Exception Occured While Printing", ex);
+                }
+            }
         }
 
 
@@ -240,3 +291,9 @@ namespace THM_Acesso
     }
 
 }
+
+
+        
+
+            
+        
