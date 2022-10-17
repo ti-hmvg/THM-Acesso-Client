@@ -165,7 +165,7 @@ namespace THM_Acesso
                                     var response = clientHttp.PostAsync(urlApi + "registraAcesso", new FormUrlEncodedContent(values)).Result;
 
                                     dynamic contentResponse = JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
-                                    
+                                    // adiconar verificação de status de erro 
                                     lbl_msg.Text = contentResponse["mensagem"].mensagem.ToString();
 
                                     lblNome.Text = contentResponse["usuario"].nm_profissional.ToString();

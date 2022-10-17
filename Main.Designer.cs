@@ -48,7 +48,7 @@
             this.ColumnNome = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnCPF = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnAcao = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnImprimir = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.ColumnImprimir = new System.Windows.Forms.DataGridViewImageColumn();
             this.ColumnPrestador = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.pictureFotoPerfil)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridHistorico)).BeginInit();
@@ -105,6 +105,7 @@
             this.label5.TabIndex = 7;
             this.label5.Text = "Ocupações:";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label5.Visible = false;
             // 
             // label6
             // 
@@ -116,6 +117,7 @@
             this.label6.TabIndex = 10;
             this.label6.Text = "Observações:";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label6.Visible = false;
             // 
             // lblObservacoes
             // 
@@ -126,6 +128,7 @@
             this.lblObservacoes.TabIndex = 16;
             this.lblObservacoes.Text = "teste nome";
             this.lblObservacoes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblObservacoes.Visible = false;
             // 
             // lblOcupacoes
             // 
@@ -136,6 +139,7 @@
             this.lblOcupacoes.TabIndex = 17;
             this.lblOcupacoes.Text = "teste nome";
             this.lblOcupacoes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblOcupacoes.Visible = false;
             // 
             // lblDtNascimento
             // 
@@ -233,6 +237,8 @@
             // ColumnImprimir
             // 
             this.ColumnImprimir.HeaderText = "Imprimir";
+            this.ColumnImprimir.Image = global::THM_Acesso.Properties.Resources.printer;
+            this.ColumnImprimir.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
             this.ColumnImprimir.Name = "ColumnImprimir";
             this.ColumnImprimir.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.ColumnImprimir.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
@@ -291,7 +297,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnNome;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnCPF;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnAcao;
-        private System.Windows.Forms.DataGridViewButtonColumn ColumnImprimir;
+        private System.Windows.Forms.DataGridViewImageColumn ColumnImprimir;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnPrestador;
     }
 }
