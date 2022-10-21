@@ -29,15 +29,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pictureFotoPerfil = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.lblObservacoes = new System.Windows.Forms.Label();
-            this.lblOcupacoes = new System.Windows.Forms.Label();
             this.lblDtNascimento = new System.Windows.Forms.Label();
             this.lblCPF = new System.Windows.Forms.Label();
             this.lblNome = new System.Windows.Forms.Label();
@@ -50,6 +46,8 @@
             this.ColumnAcao = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnImprimir = new System.Windows.Forms.DataGridViewImageColumn();
             this.ColumnPrestador = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.DataNascimento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.checkBoxPrestador = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureFotoPerfil)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridHistorico)).BeginInit();
             this.SuspendLayout();
@@ -94,52 +92,6 @@
             this.label4.TabIndex = 6;
             this.label4.Text = "Data de Nascimento:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(12, 425);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(113, 24);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "Ocupações:";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label5.Visible = false;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(12, 449);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(127, 24);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "Observações:";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label6.Visible = false;
-            // 
-            // lblObservacoes
-            // 
-            this.lblObservacoes.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblObservacoes.Location = new System.Drawing.Point(145, 449);
-            this.lblObservacoes.Name = "lblObservacoes";
-            this.lblObservacoes.Size = new System.Drawing.Size(327, 24);
-            this.lblObservacoes.TabIndex = 16;
-            this.lblObservacoes.Text = "teste nome";
-            this.lblObservacoes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblObservacoes.Visible = false;
-            // 
-            // lblOcupacoes
-            // 
-            this.lblOcupacoes.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblOcupacoes.Location = new System.Drawing.Point(131, 425);
-            this.lblOcupacoes.Name = "lblOcupacoes";
-            this.lblOcupacoes.Size = new System.Drawing.Size(341, 24);
-            this.lblOcupacoes.TabIndex = 17;
-            this.lblOcupacoes.Text = "teste nome";
-            this.lblOcupacoes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblOcupacoes.Visible = false;
             // 
             // lblDtNascimento
             // 
@@ -201,18 +153,19 @@
             this.ColumnCPF,
             this.ColumnAcao,
             this.ColumnImprimir,
-            this.ColumnPrestador});
+            this.ColumnPrestador,
+            this.DataNascimento});
             this.dataGridHistorico.Location = new System.Drawing.Point(12, 476);
             this.dataGridHistorico.MultiSelect = false;
             this.dataGridHistorico.Name = "dataGridHistorico";
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridHistorico.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridHistorico.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridHistorico.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridHistorico.Size = new System.Drawing.Size(460, 134);
             this.dataGridHistorico.TabIndex = 23;
@@ -249,20 +202,35 @@
             this.ColumnPrestador.Name = "ColumnPrestador";
             this.ColumnPrestador.Visible = false;
             // 
+            // DataNascimento
+            // 
+            this.DataNascimento.HeaderText = "DataNascimento";
+            this.DataNascimento.Name = "DataNascimento";
+            this.DataNascimento.ReadOnly = true;
+            this.DataNascimento.Visible = false;
+            // 
+            // checkBoxPrestador
+            // 
+            this.checkBoxPrestador.AutoSize = true;
+            this.checkBoxPrestador.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
+            this.checkBoxPrestador.Location = new System.Drawing.Point(17, 428);
+            this.checkBoxPrestador.Name = "checkBoxPrestador";
+            this.checkBoxPrestador.Size = new System.Drawing.Size(242, 28);
+            this.checkBoxPrestador.TabIndex = 24;
+            this.checkBoxPrestador.Text = "Entrada como Prestador?";
+            this.checkBoxPrestador.UseVisualStyleBackColor = true;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 661);
+            this.Controls.Add(this.checkBoxPrestador);
             this.Controls.Add(this.dataGridHistorico);
             this.Controls.Add(this.lbl_msg);
             this.Controls.Add(this.lblNome);
             this.Controls.Add(this.lblCPF);
             this.Controls.Add(this.lblDtNascimento);
-            this.Controls.Add(this.lblOcupacoes);
-            this.Controls.Add(this.lblObservacoes);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -283,10 +251,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label lblObservacoes;
-        private System.Windows.Forms.Label lblOcupacoes;
         private System.Windows.Forms.Label lblDtNascimento;
         private System.Windows.Forms.Label lblCPF;
         private System.Windows.Forms.Label lblNome;
@@ -299,6 +263,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnAcao;
         private System.Windows.Forms.DataGridViewImageColumn ColumnImprimir;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnPrestador;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DataNascimento;
+        private System.Windows.Forms.CheckBox checkBoxPrestador;
     }
 }
 

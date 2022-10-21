@@ -34,8 +34,6 @@ namespace THM_Acesso
             lblNome.Text = "";
             lblCPF.Text = "";
             lblDtNascimento.Text = "";
-            lblOcupacoes.Text = "";
-            lblObservacoes.Text = "";
             pictureFotoPerfil.Image = null;
         }
         public static Image LoadBase64(string base64)
@@ -97,8 +95,6 @@ namespace THM_Acesso
                 lblNome.Text = "";
                 lblCPF.Text = "";
                 lblDtNascimento.Text = "";
-                lblOcupacoes.Text = "";
-                lblObservacoes.Text = "";
                 pictureFotoPerfil.Image = null;
             }
             catch (Exception e)
@@ -159,25 +155,35 @@ namespace THM_Acesso
                                     var values = new Dictionary<string, string>
                                     {
                                         { "nr_cpf", payload.Data.Split(char.Parse(" "))[1] },
-                                        { "nr_senha", payload.Data.Split(char.Parse(" "))[0] }
+                                        { "nr_senha", payload.Data.Split(char.Parse(" "))[0] },
+                                        { "registroPrestador", checkBoxPrestador.Checked ? "on":"off" }
+
                                     };
 
                                     var response = clientHttp.PostAsync(urlApi + "registraAcesso", new FormUrlEncodedContent(values)).Result;
 
                                     dynamic contentResponse = JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
                                     // adiconar verificação de status de erro 
+
+                                    checkBoxPrestador.Checked = false;
                                     lbl_msg.Text = contentResponse["mensagem"].mensagem.ToString();
 
                                     lblNome.Text = contentResponse["usuario"].nm_profissional.ToString();
                                     lblCPF.Text = contentResponse["usuario"].nr_cpf.ToString();
                                     lblDtNascimento.Text = contentResponse["usuario"].dt_nacimento.ToString("dd/MM/yyyy");
-                                    lblObservacoes.Text = contentResponse["usuario"].ds_observacoes.ToString();
-                                    pictureFotoPerfil.Image = LoadBase64(contentResponse["img"].ToString());
+                                    var teste = contentResponse["img"].ToString();
+                                    pictureFotoPerfil.Image = contentResponse["img"].ToString() == "" ? Properties.Resources.noImage : LoadBase64(contentResponse["img"].ToString());
 
                                     var index = dataGridHistorico.Rows.Add();
                                     dataGridHistorico.Rows[index].Cells[0].Value = lblNome.Text;
                                     dataGridHistorico.Rows[index].Cells[1].Value = lblCPF.Text;
                                     dataGridHistorico.Rows[index].Cells[2].Value = contentResponse["mensagem"].acao.ToString();
+
+                                    DateTime zeroTime = new DateTime(1, 1, 1);
+                                    TimeSpan span = DateTime.Now.Subtract(DateTime.Parse(contentResponse["usuario"].dt_nacimento.ToString("dd/MM/yyyy")));
+
+                                    int years = (zeroTime + span).Year - 1;
+                                    dataGridHistorico.Rows[index].Cells[5].Value = years.ToString();
                                     //MessageBox.Show(contentResponse["mensagem"].imprime.ToString());
                                     if (contentResponse["mensagem"].imprime.ToString() == "True")
                                     {
@@ -242,14 +248,18 @@ namespace THM_Acesso
                 {
                     if (dataGridHistorico.Rows[e.RowIndex].Cells[4].Value.ToString() == "True")
                     {
-                        ePrint.Graphics.DrawString("Prestador", new Font("Times New Roman", 12), new SolidBrush(Color.Black), new Point(100, 10));
+                        ePrint.Graphics.DrawString("Prestador", new Font("Inter", 36), new SolidBrush(Color.Black), new Point(165, 0));
                     }
                     else
                     {
-                        ePrint.Graphics.DrawString("Visitante", new Font("Times New Roman", 12), new SolidBrush(Color.Black), new Point(100, 10));
+                        ePrint.Graphics.DrawString("Visitante", new Font("Inter", 36), new SolidBrush(Color.Black), new Point(165, 0));
                     }
-                    ePrint.Graphics.DrawString("Nome: " + dataGridHistorico.Rows[e.RowIndex].Cells[0].Value.ToString(), new Font("Times New Roman", 12), new SolidBrush(Color.Black), new Point(10, 25));
-                    ePrint.Graphics.DrawString("CPF: " + dataGridHistorico.Rows[e.RowIndex].Cells[1].Value.ToString(), new Font("Times New Roman", 12), new SolidBrush(Color.Black), new Point(10, 40));
+                    ePrint.Graphics.DrawString("NOME: " + dataGridHistorico.Rows[e.RowIndex].Cells[0].Value.ToString(), new Font("Inter", 12), new SolidBrush(Color.Black), new Point(155, 50));
+                    ePrint.Graphics.DrawString("CPF: " + dataGridHistorico.Rows[e.RowIndex].Cells[1].Value.ToString(), new Font("Inter", 12), new SolidBrush(Color.Black), new Point(155, 70));
+                    ePrint.Graphics.DrawString("IDADE: " + dataGridHistorico.Rows[e.RowIndex].Cells[5].Value.ToString(), new Font("Inter", 12), new SolidBrush(Color.Black), new Point(155, 90));
+                    ePrint.Graphics.DrawString("ENTRADA: " + DateTime.UtcNow.ToString("dd/MM/yy AS HH:mm"), new Font("Inter", 12), new SolidBrush(Color.Black), new Point(155, 110));
+
+                    ePrint.Graphics.DrawImage(Properties.Resources.LOGO_1, 0, 30, 150, 70);
 
                 };
                 try
