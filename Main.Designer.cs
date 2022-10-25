@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pictureFotoPerfil = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -41,13 +41,14 @@
             this.lbl_msg = new System.Windows.Forms.Label();
             this.PrintEtiqueta = new System.Drawing.Printing.PrintDocument();
             this.dataGridHistorico = new System.Windows.Forms.DataGridView();
+            this.checkBoxPrestador = new System.Windows.Forms.CheckBox();
             this.ColumnNome = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnCPF = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnAcao = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnImprimir = new System.Windows.Forms.DataGridViewImageColumn();
             this.ColumnPrestador = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.DataNascimento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.checkBoxPrestador = new System.Windows.Forms.CheckBox();
+            this.ColumnImprime = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.pictureFotoPerfil)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridHistorico)).BeginInit();
             this.SuspendLayout();
@@ -154,22 +155,34 @@
             this.ColumnAcao,
             this.ColumnImprimir,
             this.ColumnPrestador,
-            this.DataNascimento});
+            this.DataNascimento,
+            this.ColumnImprime});
             this.dataGridHistorico.Location = new System.Drawing.Point(12, 476);
             this.dataGridHistorico.MultiSelect = false;
             this.dataGridHistorico.Name = "dataGridHistorico";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridHistorico.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridHistorico.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridHistorico.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridHistorico.Size = new System.Drawing.Size(460, 134);
             this.dataGridHistorico.TabIndex = 23;
             this.dataGridHistorico.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridHistorico_CellClick);
+            // 
+            // checkBoxPrestador
+            // 
+            this.checkBoxPrestador.AutoSize = true;
+            this.checkBoxPrestador.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
+            this.checkBoxPrestador.Location = new System.Drawing.Point(17, 428);
+            this.checkBoxPrestador.Name = "checkBoxPrestador";
+            this.checkBoxPrestador.Size = new System.Drawing.Size(242, 28);
+            this.checkBoxPrestador.TabIndex = 24;
+            this.checkBoxPrestador.Text = "Entrada como Prestador?";
+            this.checkBoxPrestador.UseVisualStyleBackColor = true;
             // 
             // ColumnNome
             // 
@@ -209,16 +222,14 @@
             this.DataNascimento.ReadOnly = true;
             this.DataNascimento.Visible = false;
             // 
-            // checkBoxPrestador
+            // ColumnImprime
             // 
-            this.checkBoxPrestador.AutoSize = true;
-            this.checkBoxPrestador.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.checkBoxPrestador.Location = new System.Drawing.Point(17, 428);
-            this.checkBoxPrestador.Name = "checkBoxPrestador";
-            this.checkBoxPrestador.Size = new System.Drawing.Size(242, 28);
-            this.checkBoxPrestador.TabIndex = 24;
-            this.checkBoxPrestador.Text = "Entrada como Prestador?";
-            this.checkBoxPrestador.UseVisualStyleBackColor = true;
+            this.ColumnImprime.HeaderText = "Imprime";
+            this.ColumnImprime.Name = "ColumnImprime";
+            this.ColumnImprime.ReadOnly = true;
+            this.ColumnImprime.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ColumnImprime.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.ColumnImprime.Visible = false;
             // 
             // Main
             // 
@@ -258,13 +269,14 @@
         public System.Windows.Forms.Timer TimerVerifyFinger;
         private System.Drawing.Printing.PrintDocument PrintEtiqueta;
         private System.Windows.Forms.DataGridView dataGridHistorico;
+        private System.Windows.Forms.CheckBox checkBoxPrestador;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnNome;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnCPF;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnAcao;
         private System.Windows.Forms.DataGridViewImageColumn ColumnImprimir;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnPrestador;
         private System.Windows.Forms.DataGridViewTextBoxColumn DataNascimento;
-        private System.Windows.Forms.CheckBox checkBoxPrestador;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnImprime;
     }
 }
 

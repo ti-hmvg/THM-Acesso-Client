@@ -15,6 +15,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Printing;
+using System.Xml.Linq;
+
 namespace THM_Acesso
 {
     public partial class Main : Form
@@ -25,8 +27,8 @@ namespace THM_Acesso
         NBioAPI.IndexSearch.FP_INFO[] fpInfo;
         NBioAPI.Type.HFIR HFirCapturado;
         HttpClient clientHttp;
-        dynamic jsonFirs;        
-
+        dynamic jsonFirs;
+        string path;
         private async void lbl_msg_TextChanged(object sender, EventArgs e)
         {
             await Task.Delay(5000);
@@ -35,6 +37,46 @@ namespace THM_Acesso
             lblCPF.Text = "";
             lblDtNascimento.Text = "";
             pictureFotoPerfil.Image = null;
+        }
+        private DataTable GetDataTableFromDGV(DataGridView dgv)
+        {
+            var dt = new DataTable();
+
+            foreach (DataGridViewColumn column in dgv.Columns)
+            {
+                dt.Columns.Add(column.Name.Replace("Column",""), typeof(string));
+            }
+
+            object[] cellValues = new object[dgv.Columns.Count];
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                for (int i = 0; i < row.Cells.Count; i++)
+                {
+                    cellValues[i] = row.Cells[i].Value;
+                }
+                dt.Rows.Add(cellValues);
+            }
+
+            return dt;
+        }
+        private DataTable GetRowDataTableFromDGV(DataGridView dgv)
+        {
+            var dt = new DataTable();
+
+            foreach (DataGridViewColumn column in dgv.Columns)
+            {
+                dt.Columns.Add(column.Name.Replace("Column", ""), typeof(string));
+            }
+
+            object[] cellValues = new object[dgv.Columns.Count];
+
+            for (int i = 0; i < dgv.Rows[dgv.Rows.Count - 1].Cells.Count; i++)
+            {
+                cellValues[i] = dgv.Rows[dgv.Rows.Count - 1].Cells[i].Value;
+            }
+            dt.Rows.Add(cellValues);
+
+            return dt;
         }
         public static Image LoadBase64(string base64)
         {
@@ -52,14 +94,101 @@ namespace THM_Acesso
             cad.Show();
         }*/
 
+        //ADICIONAR MARCADOR DE TEMPO PARA RASTREAR DAS LINHAS
+
         public Main()
         {
             urlApi = ConfigurationManager.AppSettings.Get("UrlApi");
             clientHttp = new HttpClient();
 
-            
             InitializeComponent();
+            try
+            {
+                if (dataGridHistorico.Rows.Count == 0)
+                {
+                    var indexInit = dataGridHistorico.Rows.Add();
+                    dataGridHistorico.Rows[indexInit].Cells[0].ReadOnly = true;
+                    dataGridHistorico.Rows[indexInit].Cells[1].ReadOnly = true;
+                    dataGridHistorico.Rows[indexInit].Cells[2].ReadOnly = true;
+                    dataGridHistorico.Rows[indexInit].Cells[3].ReadOnly = true;
+                    dataGridHistorico.Rows[indexInit].Cells[4].ReadOnly = true;
+                    dataGridHistorico.Rows[indexInit].Cells[5].ReadOnly = true;
+                    dataGridHistorico.Rows[indexInit].Cells[6].ReadOnly = true;
+                }
 
+                path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "THM-Acesso");
+                System.IO.Directory.CreateDirectory(path);
+
+                var doc = XDocument.Load(Path.Combine(path, "HistoricoTHMAcesso.xml"));
+
+
+                if (doc.Descendants("Table1").Count() > 5)
+                {
+                    for (int i = 5; i <= doc.Descendants("Table1").Count(); i++)
+                    {
+                        //MessageBox.Show(doc.Descendants("Table1").Count().ToString());
+                        var lastFile = doc.Descendants("Table1").LastOrDefault();
+                        if (lastFile != null)
+                        {
+                            lastFile.Remove();
+                        }
+                    }
+
+                }
+
+                doc.Save(Path.Combine(path, "HistoricoTHMAcesso.xml"));
+
+                DataSet dataSet = new DataSet();
+
+                
+
+                dataSet.ReadXml(Path.Combine(path, "HistoricoTHMAcesso.xml"));
+                
+                foreach (DataRow row in dataSet.Tables[0].Rows)
+                {
+                    var index = dataGridHistorico.Rows.Add();
+                    dataGridHistorico.Rows[index].Cells[0].Value = row["Nome"].ToString();
+                    dataGridHistorico.Rows[index].Cells[1].Value = row["CPF"].ToString();
+                    dataGridHistorico.Rows[index].Cells[2].Value = row["Acao"].ToString();
+                    dataGridHistorico.Rows[index].Cells[5].Value = row["DataNascimento"].ToString();
+                    if (row["Imprime"].ToString() == "True")
+                    {
+                        dataGridHistorico.Rows[index].Cells[3].ReadOnly = false;
+                        dataGridHistorico.Rows[index].Cells[6].Value = true;
+                    }
+                    else
+                    {
+                        dataGridHistorico.Rows[index].Cells[3].ReadOnly = true;
+                        dataGridHistorico.Rows[index].Cells[6].Value = false;
+                    }
+
+                    if (row["Prestador"].ToString() == "True")
+                    {
+                        dataGridHistorico.Rows[index].Cells[4].Value = true;
+                    }
+                    else
+                    {
+                        dataGridHistorico.Rows[index].Cells[4].Value = false;
+                    }
+
+                }
+                //Task.Run(() =>{
+                   
+
+                    //string oldFilename = "HistoricoTHMAcesso-"+ DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".xml";
+                    //System.IO.File.Move(Path.Combine(path, "HistoricoTHMAcesso.xml"), Path.Combine(path, oldFilename));
+
+                //});
+                
+            }
+            catch (Exception err)
+            {
+                Task.Run(() =>
+                {
+                    MessageBox.Show("Não foi possivel carregar os dados anteriores" + err.ToString());
+                });
+                
+            }
             loadFirs();
 
 
@@ -112,6 +241,7 @@ namespace THM_Acesso
         {
             TimerVerifyFinger.Stop();
         }
+        
         private void TimerVerifyFinger_Tick(object sender, EventArgs e)
         {
             try
@@ -174,23 +304,27 @@ namespace THM_Acesso
                                     var teste = contentResponse["img"].ToString();
                                     pictureFotoPerfil.Image = contentResponse["img"].ToString() == "" ? Properties.Resources.noImage : LoadBase64(contentResponse["img"].ToString());
 
-                                    var index = dataGridHistorico.Rows.Add();
-                                    dataGridHistorico.Rows[index].Cells[0].Value = lblNome.Text;
-                                    dataGridHistorico.Rows[index].Cells[1].Value = lblCPF.Text;
-                                    dataGridHistorico.Rows[index].Cells[2].Value = contentResponse["mensagem"].acao.ToString();
-
                                     DateTime zeroTime = new DateTime(1, 1, 1);
                                     TimeSpan span = DateTime.Now.Subtract(DateTime.Parse(contentResponse["usuario"].dt_nacimento.ToString("dd/MM/yyyy")));
 
                                     int years = (zeroTime + span).Year - 1;
+
+                                    /*var index = dataGridHistorico.Rows.Add();
+
+                                    dataGridHistorico.Rows[index].Cells[0].Value = lblNome.Text;
+                                    dataGridHistorico.Rows[index].Cells[1].Value = lblCPF.Text;
+                                    dataGridHistorico.Rows[index].Cells[2].Value = contentResponse["mensagem"].acao.ToString();
+
                                     dataGridHistorico.Rows[index].Cells[5].Value = years.ToString();
                                     //MessageBox.Show(contentResponse["mensagem"].imprime.ToString());
                                     if (contentResponse["mensagem"].imprime.ToString() == "True")
                                     {
                                         dataGridHistorico.Rows[index].Cells[3].ReadOnly = false;
+                                        dataGridHistorico.Rows[index].Cells[6].Value = true;
                                     }
                                     else
                                     {
+                                        dataGridHistorico.Rows[index].Cells[6].Value = false;
                                         dataGridHistorico.Rows[index].Cells[3].ReadOnly = true;
                                     }
 
@@ -201,14 +335,56 @@ namespace THM_Acesso
                                     else
                                     {
                                         dataGridHistorico.Rows[index].Cells[4].Value = false;
-                                    }
+                                    }*/
+
                                     
+
+                                    DataGridViewRow dataGridViewRowNova = (DataGridViewRow)dataGridHistorico.Rows[0].Clone();
+
+
+                                    dataGridViewRowNova.Cells[0].Value = lblNome.Text;
+                                    dataGridViewRowNova.Cells[1].Value = lblCPF.Text;
+                                    dataGridViewRowNova.Cells[2].Value = contentResponse["mensagem"].acao.ToString();
+                                    dataGridViewRowNova.Cells[5].Value = years.ToString();
+
+                                    if (contentResponse["mensagem"].imprime.ToString() == "True")
+                                    {
+                                        dataGridViewRowNova.Cells[3].ReadOnly = false;
+                                        dataGridViewRowNova.Cells[6].Value = true;
+                                    }
+                                    else
+                                    {
+                                        dataGridViewRowNova.Cells[6].Value = false;
+                                        dataGridViewRowNova.Cells[3].ReadOnly = true;
+                                    }
+
+                                    if (contentResponse["mensagem"].prestador.ToString() == "True")
+                                    {
+                                        dataGridViewRowNova.Cells[4].Value = true;
+                                    }
+                                    else
+                                    {
+                                        dataGridViewRowNova.Cells[4].Value = false;
+                                    }
+
+                                    dataGridHistorico.Rows.Insert(0, dataGridViewRowNova);
+
                                     /*DataGridViewRow row = (DataGridViewRow)dataGridHistorico.Rows[dataGridHistorico.Rows.Add()].Clone();
                                     row.Cells[0].Value = lblNome.Text;
                                     row.Cells[1].Value = lblCPF.Text; 
                                     row.Cells[2].ReadOnly =true;
                                     dataGridHistorico.Rows.Add(lblNome.Text, lblCPF.Text, "Etiqueta Visitante");
-*/
+                                    */
+                                    DataTable dT = GetDataTableFromDGV(dataGridHistorico);
+                                    
+                                    DataSet dS = new DataSet();
+                                    dS.Tables.Add(dT);
+                                    
+                                    using (var stream = File.OpenWrite(Path.Combine(path, "HistoricoTHMAcesso.xml")))
+                                    {
+                                        dS.WriteXml(stream);
+                                    }
+
                                     if ((int)response.StatusCode == 200)
                                     {
                                         TimerVerifyFinger.Interval = 4000;
@@ -299,7 +475,7 @@ namespace THM_Acesso
             }
         }*/
     }
-
+    
 }
 
 
