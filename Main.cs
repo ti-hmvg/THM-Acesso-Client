@@ -29,6 +29,7 @@ namespace THM_Acesso
         HttpClient clientHttp;
         dynamic jsonFirs;
         string path;
+        DataGridViewRow dataGridViewRowModelo;
         private async void lbl_msg_TextChanged(object sender, EventArgs e)
         {
             await Task.Delay(5000);
@@ -102,20 +103,9 @@ namespace THM_Acesso
             clientHttp = new HttpClient();
 
             InitializeComponent();
+
             try
             {
-                if (dataGridHistorico.Rows.Count == 0)
-                {
-                    var indexInit = dataGridHistorico.Rows.Add();
-                    dataGridHistorico.Rows[indexInit].Cells[0].ReadOnly = true;
-                    dataGridHistorico.Rows[indexInit].Cells[1].ReadOnly = true;
-                    dataGridHistorico.Rows[indexInit].Cells[2].ReadOnly = true;
-                    dataGridHistorico.Rows[indexInit].Cells[3].ReadOnly = true;
-                    dataGridHistorico.Rows[indexInit].Cells[4].ReadOnly = true;
-                    dataGridHistorico.Rows[indexInit].Cells[5].ReadOnly = true;
-                    dataGridHistorico.Rows[indexInit].Cells[6].ReadOnly = true;
-                }
-
                 path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "THM-Acesso");
                 System.IO.Directory.CreateDirectory(path);
 
@@ -147,39 +137,40 @@ namespace THM_Acesso
                 foreach (DataRow row in dataSet.Tables[0].Rows)
                 {
                     var index = dataGridHistorico.Rows.Add();
-                    dataGridHistorico.Rows[index].Cells[0].Value = row["Nome"].ToString();
-                    dataGridHistorico.Rows[index].Cells[1].Value = row["CPF"].ToString();
-                    dataGridHistorico.Rows[index].Cells[2].Value = row["Acao"].ToString();
-                    dataGridHistorico.Rows[index].Cells[5].Value = row["DataNascimento"].ToString();
+                    dataGridHistorico.Rows[index].Cells[dataGridHistorico.Columns["ColumnNome"].Index].Value = row["Nome"].ToString();
+                    dataGridHistorico.Rows[index].Cells[dataGridHistorico.Columns["ColumnCPF"].Index].Value = row["CPF"].ToString();
+                    dataGridHistorico.Rows[index].Cells[dataGridHistorico.Columns["ColumnAcao"].Index].Value = row["Acao"].ToString();
+                    dataGridHistorico.Rows[index].Cells[dataGridHistorico.Columns["DataNascimento"].Index].Value = row["DataNascimento"].ToString();
+                    dataGridHistorico.Rows[index].Cells[dataGridHistorico.Columns["ColumnHorario"].Index].Value = row["Horario"].ToString();
                     if (row["Imprime"].ToString() == "True")
                     {
-                        dataGridHistorico.Rows[index].Cells[3].ReadOnly = false;
-                        dataGridHistorico.Rows[index].Cells[6].Value = true;
+                        dataGridHistorico.Rows[index].Cells[dataGridHistorico.Columns["ColumnImprimir"].Index].ReadOnly = false;
+                        dataGridHistorico.Rows[index].Cells[dataGridHistorico.Columns["ColumnImprime"].Index].Value = true;
                     }
                     else
                     {
-                        dataGridHistorico.Rows[index].Cells[3].ReadOnly = true;
-                        dataGridHistorico.Rows[index].Cells[6].Value = false;
+                        dataGridHistorico.Rows[index].Cells[dataGridHistorico.Columns["ColumnImprimir"].Index].ReadOnly = true;
+                        dataGridHistorico.Rows[index].Cells[dataGridHistorico.Columns["ColumnImprime"].Index].Value = false;
                     }
 
                     if (row["Prestador"].ToString() == "True")
                     {
-                        dataGridHistorico.Rows[index].Cells[4].Value = true;
+                        dataGridHistorico.Rows[index].Cells[dataGridHistorico.Columns["ColumnPrestador"].Index].Value = true;
                     }
                     else
                     {
-                        dataGridHistorico.Rows[index].Cells[4].Value = false;
+                        dataGridHistorico.Rows[index].Cells[dataGridHistorico.Columns["ColumnPrestador"].Index].Value = false;
                     }
 
                 }
                 //Task.Run(() =>{
-                   
 
-                    //string oldFilename = "HistoricoTHMAcesso-"+ DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".xml";
-                    //System.IO.File.Move(Path.Combine(path, "HistoricoTHMAcesso.xml"), Path.Combine(path, oldFilename));
+
+                //string oldFilename = "HistoricoTHMAcesso-"+ DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".xml";
+                //System.IO.File.Move(Path.Combine(path, "HistoricoTHMAcesso.xml"), Path.Combine(path, oldFilename));
 
                 //});
-                
+
             }
             catch (Exception err)
             {
@@ -188,6 +179,18 @@ namespace THM_Acesso
                     MessageBox.Show("Não foi possivel carregar os dados anteriores" + err.ToString());
                 });
                 
+            }
+            if (dataGridHistorico.Rows.Count < 1)
+            {
+                var indexInit = dataGridHistorico.Rows.Add();
+                dataGridHistorico.Rows[indexInit].Cells[dataGridHistorico.Columns["ColumnNome"].Index].ReadOnly = true;
+                dataGridHistorico.Rows[indexInit].Cells[dataGridHistorico.Columns["ColumnCPF"].Index].ReadOnly = true;
+                dataGridHistorico.Rows[indexInit].Cells[dataGridHistorico.Columns["ColumnAcao"].Index].ReadOnly = true;
+                dataGridHistorico.Rows[indexInit].Cells[dataGridHistorico.Columns["ColumnImprimir"].Index].ReadOnly = true;
+                dataGridHistorico.Rows[indexInit].Cells[dataGridHistorico.Columns["ColumnPrestador"].Index].ReadOnly = true;
+                dataGridHistorico.Rows[indexInit].Cells[dataGridHistorico.Columns["DataNascimento"].Index].ReadOnly = true;
+                dataGridHistorico.Rows[indexInit].Cells[dataGridHistorico.Columns["ColumnImprime"].Index].ReadOnly = true;
+                dataGridHistorico.Rows[indexInit].Cells[dataGridHistorico.Columns["ColumnHorario"].Index].ReadOnly = true;
             }
             loadFirs();
 
@@ -292,101 +295,116 @@ namespace THM_Acesso
 
                                     var response = clientHttp.PostAsync(urlApi + "registraAcesso", new FormUrlEncodedContent(values)).Result;
 
-                                    dynamic contentResponse = JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
-                                    // adiconar verificação de status de erro 
-
-                                    checkBoxPrestador.Checked = false;
-                                    lbl_msg.Text = contentResponse["mensagem"].mensagem.ToString();
-
-                                    lblNome.Text = contentResponse["usuario"].nm_profissional.ToString();
-                                    lblCPF.Text = contentResponse["usuario"].nr_cpf.ToString();
-                                    lblDtNascimento.Text = contentResponse["usuario"].dt_nacimento.ToString("dd/MM/yyyy");
-                                    var teste = contentResponse["img"].ToString();
-                                    pictureFotoPerfil.Image = contentResponse["img"].ToString() == "" ? Properties.Resources.noImage : LoadBase64(contentResponse["img"].ToString());
-
-                                    DateTime zeroTime = new DateTime(1, 1, 1);
-                                    TimeSpan span = DateTime.Now.Subtract(DateTime.Parse(contentResponse["usuario"].dt_nacimento.ToString("dd/MM/yyyy")));
-
-                                    int years = (zeroTime + span).Year - 1;
-
-                                    /*var index = dataGridHistorico.Rows.Add();
-
-                                    dataGridHistorico.Rows[index].Cells[0].Value = lblNome.Text;
-                                    dataGridHistorico.Rows[index].Cells[1].Value = lblCPF.Text;
-                                    dataGridHistorico.Rows[index].Cells[2].Value = contentResponse["mensagem"].acao.ToString();
-
-                                    dataGridHistorico.Rows[index].Cells[5].Value = years.ToString();
-                                    //MessageBox.Show(contentResponse["mensagem"].imprime.ToString());
-                                    if (contentResponse["mensagem"].imprime.ToString() == "True")
-                                    {
-                                        dataGridHistorico.Rows[index].Cells[3].ReadOnly = false;
-                                        dataGridHistorico.Rows[index].Cells[6].Value = true;
-                                    }
-                                    else
-                                    {
-                                        dataGridHistorico.Rows[index].Cells[6].Value = false;
-                                        dataGridHistorico.Rows[index].Cells[3].ReadOnly = true;
-                                    }
-
-                                    if (contentResponse["mensagem"].prestador.ToString() == "True")
-                                    {
-                                        dataGridHistorico.Rows[index].Cells[4].Value = true;
-                                    }
-                                    else
-                                    {
-                                        dataGridHistorico.Rows[index].Cells[4].Value = false;
-                                    }*/
-
-                                    
-
-                                    DataGridViewRow dataGridViewRowNova = (DataGridViewRow)dataGridHistorico.Rows[0].Clone();
-
-
-                                    dataGridViewRowNova.Cells[0].Value = lblNome.Text;
-                                    dataGridViewRowNova.Cells[1].Value = lblCPF.Text;
-                                    dataGridViewRowNova.Cells[2].Value = contentResponse["mensagem"].acao.ToString();
-                                    dataGridViewRowNova.Cells[5].Value = years.ToString();
-
-                                    if (contentResponse["mensagem"].imprime.ToString() == "True")
-                                    {
-                                        dataGridViewRowNova.Cells[3].ReadOnly = false;
-                                        dataGridViewRowNova.Cells[6].Value = true;
-                                    }
-                                    else
-                                    {
-                                        dataGridViewRowNova.Cells[6].Value = false;
-                                        dataGridViewRowNova.Cells[3].ReadOnly = true;
-                                    }
-
-                                    if (contentResponse["mensagem"].prestador.ToString() == "True")
-                                    {
-                                        dataGridViewRowNova.Cells[4].Value = true;
-                                    }
-                                    else
-                                    {
-                                        dataGridViewRowNova.Cells[4].Value = false;
-                                    }
-
-                                    dataGridHistorico.Rows.Insert(0, dataGridViewRowNova);
-
-                                    /*DataGridViewRow row = (DataGridViewRow)dataGridHistorico.Rows[dataGridHistorico.Rows.Add()].Clone();
-                                    row.Cells[0].Value = lblNome.Text;
-                                    row.Cells[1].Value = lblCPF.Text; 
-                                    row.Cells[2].ReadOnly =true;
-                                    dataGridHistorico.Rows.Add(lblNome.Text, lblCPF.Text, "Etiqueta Visitante");
-                                    */
-                                    DataTable dT = GetDataTableFromDGV(dataGridHistorico);
-                                    
-                                    DataSet dS = new DataSet();
-                                    dS.Tables.Add(dT);
-                                    
-                                    using (var stream = File.OpenWrite(Path.Combine(path, "HistoricoTHMAcesso.xml")))
-                                    {
-                                        dS.WriteXml(stream);
-                                    }
-
                                     if ((int)response.StatusCode == 200)
                                     {
+                                        dynamic contentResponse = JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
+                                        // adiconar verificação de status de erro 
+
+                                        
+                                        lbl_msg.Text = contentResponse["mensagem"].mensagem.ToString();
+
+                                        lblNome.Text = contentResponse["usuario"].nm_profissional.ToString();
+                                        lblCPF.Text = contentResponse["usuario"].nr_cpf.ToString();
+                                        lblDtNascimento.Text = contentResponse["usuario"].dt_nacimento.ToString("dd/MM/yyyy");
+                                        var teste = contentResponse["img"].ToString();
+                                        pictureFotoPerfil.Image = contentResponse["img"].ToString() == "" ? Properties.Resources.noImage : LoadBase64(contentResponse["img"].ToString());
+
+                                        DateTime zeroTime = new DateTime(1, 1, 1);
+                                        TimeSpan span = DateTime.Now.Subtract(DateTime.Parse(contentResponse["usuario"].dt_nacimento.ToString("dd/MM/yyyy")));
+
+                                        int years = (zeroTime + span).Year - 1;
+
+                                        #region OldRowInserction
+                                        /*var index = dataGridHistorico.Rows.Add();
+
+                                        dataGridHistorico.Rows[index].Cells[dataGridHistorico.Columns["ColumnNome"].Index].Value = lblNome.Text;
+                                        dataGridHistorico.Rows[index].Cells["dataGridHistorico.Columns["ColumnCPF"].Index].Value = lblCPF.Text;
+                                        dataGridHistorico.Rows[index].Cells["dataGridHistorico.Columns["ColumnAcao"].Index].Value = contentResponse["mensagem"].acao.ToString();
+
+                                        dataGridHistorico.Rows[index].Cells[dataGridHistorico.Columns["DataNascimento"].Index].Value = years.ToString();
+                                        //MessageBox.Show(contentResponse["mensagem"].imprime.ToString());
+                                        if (contentResponse["mensagem"].imprime.ToString() == "True")
+                                        {
+                                            dataGridHistorico.Rows[index].Cells["dataGridHistorico.Columns["ColumnImprimir"].Index].ReadOnly = false;
+                                            dataGridHistorico.Rows[index].Cells["dataGridHistorico.Columns["ColumnImprime"].Index].Value = true;
+                                        }
+                                        else
+                                        {
+                                            dataGridHistorico.Rows[index].Cells["dataGridHistorico.Columns["ColumnImprime"].Index].Value = false;
+                                            dataGridHistorico.Rows[index].Cells["dataGridHistorico.Columns["ColumnImprimir"].Index].ReadOnly = true;
+                                        }
+
+                                        if (contentResponse["mensagem"].prestador.ToString() == "True")
+                                        {
+                                            dataGridHistorico.Rows[index].Cells["dataGridHistorico.Columns["ColumnPrestador"].Index].Value = true;
+                                        }
+                                        else
+                                        {
+                                            dataGridHistorico.Rows[index].Cells["dataGridHistorico.Columns["ColumnPrestador"].Index].Value = false;
+                                        }*/
+                                        #endregion
+
+                                        DataGridViewRow dataGridViewRowModeloNew = (DataGridViewRow)dataGridHistorico.Rows[0].Clone();
+
+                                        dataGridViewRowModeloNew.Cells[dataGridHistorico.Columns["ColumnNome"].Index].Value = lblNome.Text;
+                                        dataGridViewRowModeloNew.Cells[dataGridHistorico.Columns["ColumnCPF"].Index].Value = lblCPF.Text;
+                                        dataGridViewRowModeloNew.Cells[dataGridHistorico.Columns["ColumnAcao"].Index].Value = contentResponse["mensagem"].acao.ToString();
+                                        dataGridViewRowModeloNew.Cells[dataGridHistorico.Columns["DataNascimento"].Index].Value = years.ToString();
+                                        dataGridViewRowModeloNew.Cells[dataGridHistorico.Columns["ColumnHorario"].Index].Value = DateTime.UtcNow.ToString("HH:mm:ss");
+
+                                        if (contentResponse["mensagem"].imprime.ToString() == "True")
+                                        {
+                                            dataGridViewRowModeloNew.Cells[dataGridHistorico.Columns["ColumnImprimir"].Index].ReadOnly = false;
+                                            dataGridViewRowModeloNew.Cells[dataGridHistorico.Columns["ColumnImprime"].Index].Value = true;
+                                        }
+                                        else
+                                        {
+                                            dataGridViewRowModeloNew.Cells[dataGridHistorico.Columns["ColumnImprime"].Index].Value = false;
+                                            dataGridViewRowModeloNew.Cells[dataGridHistorico.Columns["ColumnImprimir"].Index].ReadOnly = true;
+                                        }
+
+                                        if (contentResponse["mensagem"].prestador.ToString() == "True")
+                                        {
+                                            if (checkBoxPrestador.Checked)
+                                            {
+                                                dataGridViewRowModeloNew.Cells[dataGridHistorico.Columns["ColumnPrestador"].Index].Value = false;
+                                            }
+                                            else
+                                            {
+                                                dataGridViewRowModeloNew.Cells[dataGridHistorico.Columns["ColumnPrestador"].Index].Value = true;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            dataGridViewRowModeloNew.Cells[dataGridHistorico.Columns["ColumnPrestador"].Index].Value = false;
+                                        }
+
+                                        dataGridHistorico.Rows.Insert(0, dataGridViewRowModeloNew);
+
+                                        /*
+                                        DataGridViewRow row = (DataGridViewRow)dataGridHistorico.Rows[dataGridHistorico.Rows.Add()].Clone();
+                                        row.Cells[dataGridHistorico.Columns["ColumnNome"].Index].Value = lblNome.Text;
+                                        row.Cells["dataGridHistorico.Columns["ColumnCPF"].Index].Value = lblCPF.Text; 
+                                        row.Cells["dataGridHistorico.Columns["ColumnAcao"].Index].ReadOnly =true;
+                                        dataGridHistorico.Rows.Add(lblNome.Text, lblCPF.Text, "Etiqueta Visitante");
+                                        */
+
+                                        DataTable dT = GetDataTableFromDGV(dataGridHistorico);
+                                        DataSet dS = new DataSet();
+                                        dS.Tables.Add(dT);
+
+                                        using (var stream = File.OpenWrite(Path.Combine(path, "HistoricoTHMAcesso.xml")))
+                                        {
+                                            dS.WriteXml(stream);
+                                        }
+
+                                        checkBoxPrestador.Checked = false;
+
+                                        TimerVerifyFinger.Interval = 4000;
+                                        TimerVerifyFinger.Start();
+                                    }
+                                    else {
+                                        MessageBox.Show("Codigo de erro do servidor: "+response.StatusCode.ToString());
                                         TimerVerifyFinger.Interval = 4000;
                                         TimerVerifyFinger.Start();
                                     }
@@ -416,13 +434,13 @@ namespace THM_Acesso
         {
             
 
-            if (e.ColumnIndex == dataGridHistorico.Columns["ColumnImprimir"].Index && e.RowIndex >= 0 && dataGridHistorico.Rows[e.RowIndex].Cells[3].ReadOnly == false)
+            if (e.ColumnIndex == dataGridHistorico.Columns["ColumnImprimir"].Index && e.RowIndex >= 0 && dataGridHistorico.Rows[e.RowIndex].Cells[dataGridHistorico.Columns["ColumnImprime"].Index].Value.ToString() == "True")
             {
                 
                 PrintDocument p = new PrintDocument();
                 p.PrintPage += delegate (object senderPrint, PrintPageEventArgs ePrint)
                 {
-                    if (dataGridHistorico.Rows[e.RowIndex].Cells[4].Value.ToString() == "True")
+                    if (dataGridHistorico.Rows[e.RowIndex].Cells[dataGridHistorico.Columns["ColumnPrestador"].Index].Value.ToString() == "True")
                     {
                         ePrint.Graphics.DrawString("Prestador", new Font("Inter", 36), new SolidBrush(Color.Black), new Point(165, 0));
                     }
@@ -430,9 +448,9 @@ namespace THM_Acesso
                     {
                         ePrint.Graphics.DrawString("Visitante", new Font("Inter", 36), new SolidBrush(Color.Black), new Point(165, 0));
                     }
-                    ePrint.Graphics.DrawString("NOME: " + dataGridHistorico.Rows[e.RowIndex].Cells[0].Value.ToString(), new Font("Inter", 12), new SolidBrush(Color.Black), new Point(155, 50));
-                    ePrint.Graphics.DrawString("CPF: " + dataGridHistorico.Rows[e.RowIndex].Cells[1].Value.ToString(), new Font("Inter", 12), new SolidBrush(Color.Black), new Point(155, 70));
-                    ePrint.Graphics.DrawString("IDADE: " + dataGridHistorico.Rows[e.RowIndex].Cells[5].Value.ToString(), new Font("Inter", 12), new SolidBrush(Color.Black), new Point(155, 90));
+                    ePrint.Graphics.DrawString("NOME: " + dataGridHistorico.Rows[e.RowIndex].Cells[dataGridHistorico.Columns["ColumnNome"].Index].Value.ToString(), new Font("Inter", 12), new SolidBrush(Color.Black), new Point(155, 50));
+                    ePrint.Graphics.DrawString("CPF: " + dataGridHistorico.Rows[e.RowIndex].Cells[dataGridHistorico.Columns["ColumnCPF"].Index].Value.ToString(), new Font("Inter", 12), new SolidBrush(Color.Black), new Point(155, 70));
+                    ePrint.Graphics.DrawString("IDADE: " + dataGridHistorico.Rows[e.RowIndex].Cells[dataGridHistorico.Columns["DataNascimento"].Index].Value.ToString(), new Font("Inter", 12), new SolidBrush(Color.Black), new Point(155, 90));
                     ePrint.Graphics.DrawString("ENTRADA: " + DateTime.UtcNow.ToString("dd/MM/yy AS HH:mm"), new Font("Inter", 12), new SolidBrush(Color.Black), new Point(155, 110));
 
                     ePrint.Graphics.DrawImage(Properties.Resources.LOGO_1, 0, 30, 150, 70);

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pictureFotoPerfil = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -41,7 +41,7 @@
             this.lbl_msg = new System.Windows.Forms.Label();
             this.PrintEtiqueta = new System.Drawing.Printing.PrintDocument();
             this.dataGridHistorico = new System.Windows.Forms.DataGridView();
-            this.checkBoxPrestador = new System.Windows.Forms.CheckBox();
+            this.ColumnHorario = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnNome = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnCPF = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnAcao = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -49,6 +49,7 @@
             this.ColumnPrestador = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.DataNascimento = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnImprime = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.checkBoxPrestador = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureFotoPerfil)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridHistorico)).BeginInit();
             this.SuspendLayout();
@@ -150,6 +151,7 @@
             this.dataGridHistorico.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridHistorico.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridHistorico.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ColumnHorario,
             this.ColumnNome,
             this.ColumnCPF,
             this.ColumnAcao,
@@ -160,54 +162,58 @@
             this.dataGridHistorico.Location = new System.Drawing.Point(12, 476);
             this.dataGridHistorico.MultiSelect = false;
             this.dataGridHistorico.Name = "dataGridHistorico";
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridHistorico.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridHistorico.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGridHistorico.RowHeadersVisible = false;
             this.dataGridHistorico.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridHistorico.Size = new System.Drawing.Size(460, 134);
             this.dataGridHistorico.TabIndex = 23;
             this.dataGridHistorico.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridHistorico_CellClick);
             // 
-            // checkBoxPrestador
+            // ColumnHorario
             // 
-            this.checkBoxPrestador.AutoSize = true;
-            this.checkBoxPrestador.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.checkBoxPrestador.Location = new System.Drawing.Point(17, 428);
-            this.checkBoxPrestador.Name = "checkBoxPrestador";
-            this.checkBoxPrestador.Size = new System.Drawing.Size(242, 28);
-            this.checkBoxPrestador.TabIndex = 24;
-            this.checkBoxPrestador.Text = "Entrada como Prestador?";
-            this.checkBoxPrestador.UseVisualStyleBackColor = true;
+            this.ColumnHorario.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ColumnHorario.FillWeight = 233.7662F;
+            this.ColumnHorario.HeaderText = "Horário";
+            this.ColumnHorario.Name = "ColumnHorario";
+            this.ColumnHorario.Width = 60;
             // 
             // ColumnNome
             // 
+            this.ColumnNome.FillWeight = 33.11688F;
             this.ColumnNome.HeaderText = "Nome";
             this.ColumnNome.Name = "ColumnNome";
             // 
             // ColumnCPF
             // 
+            this.ColumnCPF.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.ColumnCPF.HeaderText = "CPF";
             this.ColumnCPF.Name = "ColumnCPF";
+            this.ColumnCPF.Width = 75;
             // 
             // ColumnAcao
             // 
+            this.ColumnAcao.FillWeight = 33.11688F;
             this.ColumnAcao.HeaderText = "Ação";
             this.ColumnAcao.Name = "ColumnAcao";
             this.ColumnAcao.ReadOnly = true;
             // 
             // ColumnImprimir
             // 
+            this.ColumnImprimir.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.ColumnImprimir.HeaderText = "Imprimir";
             this.ColumnImprimir.Image = global::THM_Acesso.Properties.Resources.printer;
             this.ColumnImprimir.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
             this.ColumnImprimir.Name = "ColumnImprimir";
             this.ColumnImprimir.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.ColumnImprimir.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.ColumnImprimir.Width = 45;
             // 
             // ColumnPrestador
             // 
@@ -230,6 +236,17 @@
             this.ColumnImprime.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.ColumnImprime.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.ColumnImprime.Visible = false;
+            // 
+            // checkBoxPrestador
+            // 
+            this.checkBoxPrestador.AutoSize = true;
+            this.checkBoxPrestador.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxPrestador.Location = new System.Drawing.Point(17, 428);
+            this.checkBoxPrestador.Name = "checkBoxPrestador";
+            this.checkBoxPrestador.Size = new System.Drawing.Size(219, 28);
+            this.checkBoxPrestador.TabIndex = 24;
+            this.checkBoxPrestador.Text = "É Prestador Visitando?";
+            this.checkBoxPrestador.UseVisualStyleBackColor = true;
             // 
             // Main
             // 
@@ -270,6 +287,7 @@
         private System.Drawing.Printing.PrintDocument PrintEtiqueta;
         private System.Windows.Forms.DataGridView dataGridHistorico;
         private System.Windows.Forms.CheckBox checkBoxPrestador;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnHorario;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnNome;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnCPF;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnAcao;
