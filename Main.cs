@@ -1,17 +1,13 @@
-﻿using MySql.Data.MySqlClient;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 using NITGEN.SDK.NBioBSP;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Printing;
@@ -100,6 +96,7 @@ namespace THM_Acesso
         public Main()
         {
             urlApi = ConfigurationManager.AppSettings.Get("UrlApi");
+
             clientHttp = new HttpClient();
 
             InitializeComponent();
@@ -220,7 +217,6 @@ namespace THM_Acesso
                             IsWideChar = true,
                             TextFIR = usuario["fir_digital"].ToString()
                         }, uint.Parse(usuario["cd_profissional"].ToString()), out fpInfo);
-
                     }
                 }
                 lbl_msg.Text = "Registre a entrada ou pesquise por CPF";
@@ -231,8 +227,12 @@ namespace THM_Acesso
             }
             catch (Exception e)
             {
-                MessageBox.Show("Ocorreu algum erro ao carregar os dados. Procure a TI");
-                MessageBox.Show(e.Message);
+                Task.Run(() =>
+                {
+                    MessageBox.Show("Erro no carregamento das FIRs");
+                    MessageBox.Show(e.ToString());
+                });
+                
             }
         }
         private void Main_Activated(object sender, EventArgs e)
