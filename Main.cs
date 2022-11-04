@@ -18,7 +18,7 @@ namespace THM_Acesso
     public partial class Main : Form
     {
         string urlApi;
-        NBioAPI m_NBioAPI;
+         NBioAPI m_NBioAPI;
         NBioAPI.IndexSearch m_IndexSearch;   
         NBioAPI.IndexSearch.FP_INFO[] fpInfo;
         NBioAPI.Type.HFIR HFirCapturado;
@@ -29,7 +29,7 @@ namespace THM_Acesso
         private async void lbl_msg_TextChanged(object sender, EventArgs e)
         {
             await Task.Delay(5000);
-            lbl_msg.Text = "Registre a entrada ou pesquise por CPF";
+            lbl_msg.Text = "Registre a entrada pela Biometria";
             lblNome.Text = "";
             lblCPF.Text = "";
             lblDtNascimento.Text = "";
@@ -219,7 +219,7 @@ namespace THM_Acesso
                         }, uint.Parse(usuario["cd_profissional"].ToString()), out fpInfo);
                     }
                 }
-                lbl_msg.Text = "Registre a entrada ou pesquise por CPF";
+                lbl_msg.Text = "Registre a entrada pela Biometria";
                 lblNome.Text = "";
                 lblCPF.Text = "";
                 lblDtNascimento.Text = "";
@@ -247,9 +247,9 @@ namespace THM_Acesso
         
         private void TimerVerifyFinger_Tick(object sender, EventArgs e)
         {
+                TimerVerifyFinger.Stop();
             try
             {
-                TimerVerifyFinger.Stop();
                 
                 bool dedoNoSensor;
                 m_NBioAPI.CheckFinger(out dedoNoSensor);
@@ -407,9 +407,12 @@ namespace THM_Acesso
                                         MessageBox.Show("Codigo de erro do servidor: "+response.StatusCode.ToString());
                                         TimerVerifyFinger.Interval = 4000;
                                         TimerVerifyFinger.Start();
+
                                     }
                                 }
+                                break;
                             }
+
                         }
                     }
                 }
