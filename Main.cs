@@ -102,7 +102,7 @@ namespace THM_Acesso
                 var doc = XDocument.Load(Path.Combine(path, "HistoricoTHMAcesso.xml"));
 
 
-                if (doc.Descendants("Table1").Count() > 5)
+                if (doc.Descendants("Table1").Count() > 20)
                 {
                     for (int i = 5; i <= doc.Descendants("Table1").Count(); i++)
                     {
@@ -224,6 +224,54 @@ namespace THM_Acesso
 
             }
         }
+        public void ReLoadFirs()
+        {
+            try
+            {
+            m_IndexSearch.TerminateEngine();
+            m_NBioAPI.Dispose();
+            jsonFirs = null;
+                var firs = clientHttp.GetAsync(urlApi + "biometria/dados").Result;
+
+                if ((int)firs.StatusCode == 200)
+                {
+                    m_NBioAPI = new NBioAPI();
+                    m_NBioAPI.OpenDevice(NBioAPI.Type.DEVICE_ID.AUTO);
+
+                    m_IndexSearch = new NBioAPI.IndexSearch(m_NBioAPI);
+                    m_IndexSearch.InitEngine();
+
+                    jsonFirs = JsonConvert.DeserializeObject(firs.Content.ReadAsStringAsync().Result);
+
+                    foreach (var usuario in jsonFirs)
+                    {
+                        m_IndexSearch.AddFIR(new NBioAPI.Type.FIR_TEXTENCODE
+                        {
+                            IsWideChar = true,
+                            TextFIR = usuario["fir_digital"].ToString()
+                        }, uint.Parse(usuario["cd_profissional"].ToString()), out fpInfo);
+                    }
+                }
+                lbl_msg.Text = "Registre a entrada pela Biometria";
+                lblNome.Text = "";
+                lblCPF.Text = "";
+                lblDtNascimento.Text = "";
+                pictureFotoPerfil.Image = null;
+                Task.Run(() =>
+                {
+                    MessageBox.Show("FIRs carregadas com sucesso");
+                });
+            }
+            catch (Exception e)
+            {
+                Task.Run(() =>
+                {
+                    MessageBox.Show("Erro no carregamento das FIRs");
+                    MessageBox.Show(e.ToString());
+                });
+
+            }
+        }
         private void Main_Activated(object sender, EventArgs e)
         {
             TimerVerifyFinger.Start();
@@ -266,20 +314,18 @@ namespace THM_Acesso
                         if (resultMatch)
                         {
                             var values = new Dictionary<string, string>
-                                    {
-                                        { "nr_cpf", payload.Data.Split(char.Parse(" "))[1] },
-                                        { "nr_senha", payload.Data.Split(char.Parse(" "))[0] },
-                                        { "registroPrestador", checkBoxPrestador.Checked ? "on":"off" }
+                            {
+                                { "nr_cpf", payload.Data.Split(char.Parse(" "))[1] },
+                                { "nr_senha", payload.Data.Split(char.Parse(" "))[0] },
+                                { "registroPrestador", checkBoxPrestador.Checked ? "on":"off" }
 
-                                    };
+                            };
 
                             var response = clientHttp.PostAsync(urlApi + "registraAcesso", new FormUrlEncodedContent(values)).Result;
 
                             if ((int)response.StatusCode == 200)
                             {
                                 dynamic contentResponse = JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
-                                // adiconar verificação de status de erro 
-
 
                                 lbl_msg.Text = contentResponse["mensagem"].mensagem.ToString();
 
@@ -294,35 +340,6 @@ namespace THM_Acesso
 
                                 int years = (zeroTime + span).Year - 1;
 
-                                #region OldRowInserction
-                                /*var index = dataGridHistorico.Rows.Add();
-
-                                dataGridHistorico.Rows[index].Cells[dataGridHistorico.Columns["ColumnNome"].Index].Value = lblNome.Text;
-                                dataGridHistorico.Rows[index].Cells["dataGridHistorico.Columns["ColumnCPF"].Index].Value = lblCPF.Text;
-                                dataGridHistorico.Rows[index].Cells["dataGridHistorico.Columns["ColumnAcao"].Index].Value = contentResponse["mensagem"].acao.ToString();
-
-                                dataGridHistorico.Rows[index].Cells[dataGridHistorico.Columns["DataNascimento"].Index].Value = years.ToString();
-                                //MessageBox.Show(contentResponse["mensagem"].imprime.ToString());
-                                if (contentResponse["mensagem"].imprime.ToString() == "True")
-                                {
-                                    dataGridHistorico.Rows[index].Cells["dataGridHistorico.Columns["ColumnImprimir"].Index].ReadOnly = false;
-                                    dataGridHistorico.Rows[index].Cells["dataGridHistorico.Columns["ColumnImprime"].Index].Value = true;
-                                }
-                                else
-                                {
-                                    dataGridHistorico.Rows[index].Cells["dataGridHistorico.Columns["ColumnImprime"].Index].Value = false;
-                                    dataGridHistorico.Rows[index].Cells["dataGridHistorico.Columns["ColumnImprimir"].Index].ReadOnly = true;
-                                }
-
-                                if (contentResponse["mensagem"].prestador.ToString() == "True")
-                                {
-                                    dataGridHistorico.Rows[index].Cells["dataGridHistorico.Columns["ColumnPrestador"].Index].Value = true;
-                                }
-                                else
-                                {
-                                    dataGridHistorico.Rows[index].Cells["dataGridHistorico.Columns["ColumnPrestador"].Index].Value = false;
-                                }*/
-                                #endregion
 
                                 DataGridViewRow dataGridViewRowModeloNew = (DataGridViewRow)dataGridHistorico.Rows[0].Clone();
 
@@ -361,13 +378,6 @@ namespace THM_Acesso
 
                                 dataGridHistorico.Rows.Insert(0, dataGridViewRowModeloNew);
 
-                                /*
-                                DataGridViewRow row = (DataGridViewRow)dataGridHistorico.Rows[dataGridHistorico.Rows.Add()].Clone();
-                                row.Cells[dataGridHistorico.Columns["ColumnNome"].Index].Value = lblNome.Text;
-                                row.Cells["dataGridHistorico.Columns["ColumnCPF"].Index].Value = lblCPF.Text; 
-                                row.Cells["dataGridHistorico.Columns["ColumnAcao"].Index].ReadOnly =true;
-                                dataGridHistorico.Rows.Add(lblNome.Text, lblCPF.Text, "Etiqueta Visitante");
-                                */
 
                                 DataTable dT = GetDataTableFromDGV(dataGridHistorico);
                                 DataSet dS = new DataSet();
@@ -473,34 +483,9 @@ namespace THM_Acesso
 
         private void button1_Click(object sender, EventArgs e)
         {
-            loadFirs();
+            ReLoadFirs();
         }
 
-
-
-        /*private void btnBuscar_Click(object sender, EventArgs e)
-        {
-            //verificar digital
-            var firs = clientHttp.GetAsync(urlApi + "buscaUsuario/"+ txbCpf.Text).Result;
-            var contentResponse = firs.Content.ReadAsStringAsync().Result;
-
-            if ((int)firs.StatusCode == 302)
-            {
-                if (MessageBox.Show("CPF cadastrado, Deseja Fazer o Registro Manual?", "CPF Cadastrado", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    
-                }
-            }
-            else if ((int)firs.StatusCode == 404)
-            {
-                if (MessageBox.Show("CPF não Cadastrado, Deseja Abrir a Janela de Cadastro ?", "CPF Não Cadastrado", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-
-                    Cadastro cad = new Cadastro(txbCpf.Text);
-                    cad.Show();
-                }
-            }
-        }*/
     }
 
 }
