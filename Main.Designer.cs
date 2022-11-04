@@ -50,6 +50,7 @@
             this.DataNascimento = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnImprime = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.checkBoxPrestador = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureFotoPerfil)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridHistorico)).BeginInit();
             this.SuspendLayout();
@@ -141,7 +142,6 @@
             this.lbl_msg.Text = "label7aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
     "aaaaaaaaaaaaaa";
             this.lbl_msg.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lbl_msg.TextChanged += new System.EventHandler(this.lbl_msg_TextChanged);
             // 
             // dataGridHistorico
             // 
@@ -248,11 +248,22 @@
             this.checkBoxPrestador.Text = "É Prestador Visitando?";
             this.checkBoxPrestador.UseVisualStyleBackColor = true;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(397, 626);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 25;
+            this.button1.Text = "Atualizar Dados";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 661);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.checkBoxPrestador);
             this.Controls.Add(this.dataGridHistorico);
             this.Controls.Add(this.lbl_msg);
@@ -295,6 +306,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnPrestador;
         private System.Windows.Forms.DataGridViewTextBoxColumn DataNascimento;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnImprime;
+        private System.Windows.Forms.Button button1;
     }
 }
-
