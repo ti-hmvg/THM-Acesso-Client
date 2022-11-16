@@ -262,18 +262,17 @@ namespace THM_Acesso
         {
             try
             {
-                m_IndexSearch.TerminateEngine();
-                m_NBioAPI.Dispose();
+                m_IndexSearch.ClearDB();
                 jsonFirs = null;
                 var firs = clientHttp.GetAsync(urlApi + "biometria/dados").Result;
 
                 if ((int)firs.StatusCode == 200)
                 {
-                    m_NBioAPI = new NBioAPI();
-                    m_NBioAPI.OpenDevice(NBioAPI.Type.DEVICE_ID.AUTO);
+                    //m_NBioAPI = new NBioAPI();
+                    //m_NBioAPI.OpenDevice(NBioAPI.Type.DEVICE_ID.AUTO);
 
-                    m_IndexSearch = new NBioAPI.IndexSearch(m_NBioAPI);
-                    m_IndexSearch.InitEngine();
+                    //m_IndexSearch = new NBioAPI.IndexSearch(m_NBioAPI);
+                    //m_IndexSearch.InitEngine();
 
                     jsonFirs = JsonConvert.DeserializeObject(firs.Content.ReadAsStringAsync().Result);
 
@@ -382,7 +381,7 @@ namespace THM_Acesso
                                     dataGridViewRowModeloNew.Cells[dataGridHistorico.Columns["ColumnCPF"].Index].Value = lblCPF.Text;
                                     dataGridViewRowModeloNew.Cells[dataGridHistorico.Columns["ColumnAcao"].Index].Value = contentResponse["mensagem"].acao.ToString();
                                     dataGridViewRowModeloNew.Cells[dataGridHistorico.Columns["DataNascimento"].Index].Value = years.ToString();
-                                    dataGridViewRowModeloNew.Cells[dataGridHistorico.Columns["ColumnHorario"].Index].Value = DateTime.UtcNow.ToString("HH:mm:ss");
+                                    dataGridViewRowModeloNew.Cells[dataGridHistorico.Columns["ColumnHorario"].Index].Value = DateTime.Now.ToString("HH:mm:ss");
 
                                     if (contentResponse["mensagem"].imprime.ToString() == "True")
                                     {
