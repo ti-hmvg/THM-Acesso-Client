@@ -508,10 +508,10 @@ namespace THM_Acesso
                     {
                         ePrint.Graphics.DrawString("Visitante", new Font("Inter", 36), new SolidBrush(Color.Black), new Point(165, 0));
                     }
-                    ePrint.Graphics.DrawString("NOME: " + dataGridHistorico.Rows[e.RowIndex].Cells[dataGridHistorico.Columns["ColumnNome"].Index].Value.ToString(), new Font("Inter", 12), new SolidBrush(Color.Black), new Point(155, 50));
-                    ePrint.Graphics.DrawString("CPF: " + dataGridHistorico.Rows[e.RowIndex].Cells[dataGridHistorico.Columns["ColumnCPF"].Index].Value.ToString(), new Font("Inter", 12), new SolidBrush(Color.Black), new Point(155, 70));
-                    ePrint.Graphics.DrawString("IDADE: " + dataGridHistorico.Rows[e.RowIndex].Cells[dataGridHistorico.Columns["DataNascimento"].Index].Value.ToString(), new Font("Inter", 12), new SolidBrush(Color.Black), new Point(155, 90));
-                    ePrint.Graphics.DrawString("ENTRADA: " + DateTime.UtcNow.ToString("dd/MM/yy AS HH:mm"), new Font("Inter", 12), new SolidBrush(Color.Black), new Point(155, 110));
+                    ePrint.Graphics.DrawString("NOME: " + dataGridHistorico.Rows[e.RowIndex].Cells[dataGridHistorico.Columns["ColumnNome"].Index].Value.ToString(), new Font("Inter", 12), new SolidBrush(Color.Black), new RectangleF(155, 48, 250, 40));
+                    ePrint.Graphics.DrawString("CPF: " + dataGridHistorico.Rows[e.RowIndex].Cells[dataGridHistorico.Columns["ColumnCPF"].Index].Value.ToString(), new Font("Inter", 12), new SolidBrush(Color.Black), new Point(155, 83));
+                    ePrint.Graphics.DrawString("IDADE: " + dataGridHistorico.Rows[e.RowIndex].Cells[dataGridHistorico.Columns["DataNascimento"].Index].Value.ToString(), new Font("Inter", 12), new SolidBrush(Color.Black), new Point(155, 98));
+                    ePrint.Graphics.DrawString("ENTRADA: " + DateTime.Now.ToString("dd/MM/yy AS HH:mm"), new Font("Inter", 12), new SolidBrush(Color.Black), new Point(155, 115));
 
                     ePrint.Graphics.DrawImage(Properties.Resources.LOGO_1, 0, 30, 150, 70);
 
