@@ -349,6 +349,8 @@ namespace THM_Acesso
                             {
                                 var values = new Dictionary<string, string>
                                 {
+
+                                    { "host_name_maquina_registro", System.Environment.MachineName },
                                     { "nr_cpf", payload.Data.Split(char.Parse(" "))[1] },
                                     { "nr_senha", payload.Data.Split(char.Parse(" "))[0] },
                                     { "registroPrestador", checkBoxPrestador.Checked ? "on":"off" }
